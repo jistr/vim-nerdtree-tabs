@@ -2,12 +2,12 @@
 " TODO: preserve NERDTree cursor and scroll position across tabs
 
 " global on/off NERDTree state
-let s:nerd_tree_is_active = 0
+let s:nerd_tree_globally_active = 0
 
 " automatic NERDTree mirroring on tab switch
 " when having just one window in the tab
 function s:NERDTreeMirrorIfActive()
-  if winnr("$") < 2 && s:nerd_tree_is_active
+  if winnr("$") < 2 && s:nerd_tree_globally_active
     NERDTreeMirror
 
     " hack to move the focus from the NERDTree to the main window
@@ -19,7 +19,7 @@ endfunction
 
 " close NERDTree across all tabs
 function s:NERDTreeCloseAllTabs()
-  let s:nerd_tree_is_active = 0
+  let s:nerd_tree_globally_active = 0
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
@@ -49,7 +49,7 @@ endfunction
 
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
 function s:NERDTreeMirrorOrCreateAllTabs()
-  let s:nerd_tree_is_active = 1
+  let s:nerd_tree_globally_active = 1
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
