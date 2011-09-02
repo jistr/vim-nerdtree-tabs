@@ -18,6 +18,10 @@ if !exists('g:nerdtree_tabs_meaningful_tab_names')
   let g:nerdtree_tabs_meaningful_tab_names = 1
 endif
 
+" close current tab if there is only one window in it and it's NERDTree
+if !exists('g:nerdtree_tabs_autoclose')
+  let g:nerdtree_tabs_autoclose = 1
+endif
 
 " === plugin mappings ===
 noremap <silent> <unique> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
@@ -104,6 +108,18 @@ function s:NERDTreeUnfocus()
   endif
 endfunction
 
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
 " check if NERDTree is open in current tab
 function s:IsNERDTreeOpenInCurrentTab()
   let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
@@ -131,7 +147,14 @@ fun s:TabLeaveHandler()
   endif
 endfun
 
+fun s:WinEnterHandler()
+  if g:nerdtree_tabs_autoclose
+    call s:CloseIfOnlyNerdTreeLeft()
+  endif
+endfun
+
 autocmd GuiEnter * silent call <SID>GuiEnterHandler()
 autocmd TabEnter * silent call <SID>TabEnterHandler()
 autocmd TabLeave * silent call <SID>TabLeaveHandler()
+autocmd WinEnter * silent call <SID>WinEnterHandler()
 
