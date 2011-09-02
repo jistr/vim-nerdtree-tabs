@@ -1,4 +1,3 @@
-" TODO: only mirror in truly new tabs? can I learn which is new and which not?
 " TODO: preserve NERDTree cursor and scroll position across tabs
 
 " === plugin configuration variables ===
@@ -33,13 +32,19 @@ command NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
 let s:nerd_tree_globally_active = 0
 
 " automatic NERDTree mirroring on tab switch
-" when having just one window in the tab
-function s:NERDTreeMirrorIfActive()
-  if winnr("$") < 2 && s:nerd_tree_globally_active
-    NERDTreeMirror
+function s:NERDTreeMirrorIfGloballyActive()
+  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
 
-    " move the focus from the NERDTree to the main window
-    wincmd w
+  " if NERDTree is not active in the current tab, try to mirror it
+  let l:previous_winnr = winnr("$")
+  if s:nerd_tree_globally_active && !l:nerd_tree_open
+    silent NERDTreeMirror
+
+    " if the window count of current tab changed, it means that NERDTreeMirror
+    " was successful and we should move focus to the next window
+    if l:previous_winnr != winnr("$")
+      wincmd w
+    endif
   endif
 endfunction
 
@@ -55,13 +60,11 @@ endfunction
 
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
 function s:NERDTreeMirrorOrCreate()
-  " is NERDTree active in the current tab?
-  let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
-  let l:nerd_tree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
+  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
   let l:previous_winnr = winnr("$")
-  if !l:nerd_tree_active
+  if !l:nerd_tree_open
     silent NERDTreeMirror
 
     " if the window count of current tab didn't increase after NERDTreeMirror,
@@ -85,11 +88,9 @@ endfunction
 
 " toggle NERDTree in current tab and match the state in all other tabs
 function s:NERDTreeToggleAllTabs()
-  " is NERDTree active in the current tab?
-  let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
-  let l:nerd_tree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
+  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
 
-  if l:nerd_tree_active
+  if l:nerd_tree_open
     call s:NERDTreeCloseAllTabs()
   else
     call s:NERDTreeMirrorOrCreateAllTabs()
@@ -103,6 +104,13 @@ function s:NERDTreeUnfocus()
   endif
 endfunction
 
+" check if NERDTree is open in current tab
+function s:IsNERDTreeOpenInCurrentTab()
+  let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
+  let l:nerd_tree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
+  return l:nerd_tree_active
+endfunction
+
 " === event handlers ===
 
 fun s:GuiEnterHandler()
@@ -113,7 +121,7 @@ endfun
 
 fun s:TabEnterHandler()
   if g:nerdtree_tabs_open_on_new_tab
-    call s:NERDTreeMirrorIfActive()
+    call s:NERDTreeMirrorIfGloballyActive()
   endif
 endfun
 
