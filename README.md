@@ -44,6 +44,10 @@ the name of the file you are editing.
 Tab with NERDTree and a file won't hang open when you close the file. NERDTree
 will close automatically and so will the tab.
 
+### Autoopen on startup
+
+NERDTree will open automatically on GVim/MacVim startup.
+
 ## Configuration
 
 You can switch on/off some features of the plugin by setting global vars to 1
