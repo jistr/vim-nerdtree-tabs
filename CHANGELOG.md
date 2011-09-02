@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.0.0
+
+* NERDTree view synchronization (cursor position and scroll) across tabs
+
 ## v0.2.0
 
 * Better solution for opening NERDTree on tab creation (fixes wrong behavior in

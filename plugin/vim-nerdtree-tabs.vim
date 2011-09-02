@@ -12,7 +12,8 @@ if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
 
-" open NERDTree on new tab creation
+" Open NERDTree on new tab creation if NERDTree was globally opened
+" by :NERDTreeTabsToggle
 if !exists('g:nerdtree_tabs_open_on_new_tab')
   let g:nerdtree_tabs_open_on_new_tab = 1
 endif
@@ -26,6 +27,11 @@ endif
 " close current tab if there is only one window in it and it's NERDTree
 if !exists('g:nerdtree_tabs_autoclose')
   let g:nerdtree_tabs_autoclose = 1
+endif
+
+" synchronize view of all NERDTree windows (scroll and cursor position)
+if !exists('g:nerdtree_tabs_synchronize_view')
+  let g:nerdtree_tabs_synchronize_view = 1
 endif
 
 " === plugin mappings ===
@@ -132,6 +138,26 @@ function s:IsNERDTreeOpenInCurrentTab()
   return l:nerd_tree_active
 endfunction
 
+function s:SaveNERDTreeViewIfPossible()
+  if match(bufname('%'), 'NERD_tree_\d\+') == 0
+    let s:nerdtree_view = winsaveview()
+  endif
+endfunction
+
+function s:RestoreNERDTreeViewIfPossible()
+  " if nerdtree exists in current tab, it is the current window and if saved
+  " state is available, restore it
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && exists('s:nerdtree_view')
+    let l:current_winnr = winnr()
+    let l:nerdtree_winnr = bufwinnr(t:NERDTreeBufName)
+
+    exe l:nerdtree_winnr . "wincmd w"
+    call winrestview(s:nerdtree_view)
+    exe l:current_winnr . "wincmd w"
+  endif
+endfunction
+
+
 " === event handlers ===
 
 fun s:GuiEnterHandler()
@@ -150,6 +176,9 @@ fun s:TabEnterHandler()
   if g:nerdtree_tabs_open_on_new_tab
     call s:NERDTreeMirrorIfGloballyActive()
   endif
+  if g:nerdtree_tabs_synchronize_view
+    call s:RestoreNERDTreeViewIfPossible()
+  endif
 endfun
 
 fun s:TabLeaveHandler()
@@ -164,9 +193,16 @@ fun s:WinEnterHandler()
   endif
 endfun
 
+fun s:WinLeaveHandler()
+  if g:nerdtree_tabs_synchronize_view
+    call s:SaveNERDTreeViewIfPossible()
+  endif
+endfun
+
 autocmd GuiEnter * silent call <SID>GuiEnterHandler()
 autocmd VimEnter * silent call <SID>VimEnterHandler()
 autocmd TabEnter * silent call <SID>TabEnterHandler()
 autocmd TabLeave * silent call <SID>TabLeaveHandler()
 autocmd WinEnter * silent call <SID>WinEnterHandler()
+autocmd WinLeave * silent call <SID>WinLeaveHandler()
 

@@ -4,8 +4,8 @@
 
 1. Copy the plugin to your vim config dir (via pathogen or any way you want).
 
-2. Map :NERDTreeTabsToggle command to some combo so you don't have to use it as
-   a command. Alternatively, you can use plug-mapping like this:
+2. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
+   Alternatively, you can use plug-mapping instead of a command, like this:
 
         map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
@@ -30,7 +30,12 @@ closes in all tabs.
 
 Tired of having a fully collapsed NERDTree every time you open a new tab?
 Vim-nerdtree-tabs will keep them all synchronized. You will get just one
-NERDTree buffer for all your tabs.
+NERDTree buffer for all your tabs. As long as you open NERDTree using the
+:NERDTreeTabsToggle command, that is.
+
+### Sync to the max
+
+All NERDTree windows will always have the same scroll and cursor position.
 
 ### Meaningful tab captions
 
@@ -46,13 +51,14 @@ will close automatically and so will the tab.
 
 ### Autoopen on startup
 
-NERDTree will open automatically on GVim/MacVim startup.
+NERDTree will open automatically on GVim/MacVim startup. You can configure it
+to open on console Vim as well, but this is disabled by default.
 
 ## Configuration
 
 You can switch on/off some features of the plugin by setting global vars to 1
-(that means on) or 0 (that means off). Here are the options and their default
-values:
+(that means on) or 0 (that means off) in your vimrc. Here are the options and
+their default values:
 
 * `let g:nerdtree_tabs_open_on_gui_startup = 1`  
   Open NERDTree on gvim/macvim startup
@@ -61,7 +67,8 @@ values:
   Open NERDTree on console vim startup
 
 * `let g:nerdtree_tabs_open_on_new_tab = 1`  
-  Open NERDTree on new tab creation
+  Open NERDTree on new tab creation (if NERDTree was globally opened by
+  :NERDTreeTabsToggle)
 
 * `let g:nerdtree_tabs_meaningful_tab_names = 1`  
   Unfocus NERDTree when leaving a tab for descriptive tab names
@@ -69,6 +76,8 @@ values:
 * `let g:nerdtree_tabs_autoclose = 1`  
   Close current tab if there is only one window in it and it's NERDTree
 
+* `let g:nerdtree_tabs_synchronize_view = 1`  
+  Synchronize view of all NERDTree windows (scroll and cursor position)
 
 ## Credits
 
