@@ -7,9 +7,9 @@ if !exists('g:nerdtree_tabs_open_on_gui_startup')
   let g:nerdtree_tabs_open_on_gui_startup = 1
 endif
 
-" open NERDTree on vim/gvim/macvim startup
-if !exists('g:nerdtree_tabs_open_on_startup')
-  let g:nerdtree_tabs_open_on_startup = 0
+" open NERDTree on console vim startup
+if !exists('g:nerdtree_tabs_open_on_console_startup')
+  let g:nerdtree_tabs_open_on_console_startup = 0
 endif
 
 " open NERDTree on new tab creation
@@ -141,7 +141,7 @@ fun s:GuiEnterHandler()
 endfun
 
 fun s:VimEnterHandler()
-  if g:nerdtree_tabs_open_on_startup
+  if g:nerdtree_tabs_open_on_console_startup && !has('gui_running')
     call s:NERDTreeMirrorOrCreateAllTabs()
   endif
 endfun
