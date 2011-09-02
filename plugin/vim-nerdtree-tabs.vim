@@ -38,10 +38,8 @@ function s:NERDTreeMirrorIfActive()
   if winnr("$") < 2 && s:nerd_tree_globally_active
     NERDTreeMirror
 
-    " hack to move the focus from the NERDTree to the main window
-    " FIXME: make this less stupid and error prone
-    wincmd p
-    wincmd l
+    " move the focus from the NERDTree to the main window
+    wincmd w
   endif
 endfunction
 
