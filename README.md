@@ -44,6 +44,28 @@ the name of the file you are editing.
 Tab with NERDTree and a file won't hang open when you close the file. NERDTree
 will close automatically and so will the tab.
 
+## Configuration
+
+You can switch on/off some features of the plugin by setting global vars to 1
+(that means on) or 0 (that means off). Here are the options and their default
+values:
+
+* `let g:nerdtree_tabs_open_on_gui_startup = 1`  
+  Open NERDTree on gvim/macvim startup
+
+* `let g:nerdtree_tabs_open_on_console_startup = 0`  
+  Open NERDTree on console vim startup
+
+* `let g:nerdtree_tabs_open_on_new_tab = 1`  
+  Open NERDTree on new tab creation
+
+* `let g:nerdtree_tabs_meaningful_tab_names = 1`  
+  Unfocus NERDTree when leaving a tab for descriptive tab names
+
+* `let g:nerdtree_tabs_autoclose = 1`  
+  Close current tab if there is only one window in it and it's NERDTree
+
+
 ## Credits
 
 * The tab autoclose feature is stolen from Carl Lerche & Yehuda Katz's
