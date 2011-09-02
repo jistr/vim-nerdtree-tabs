@@ -9,7 +9,7 @@ endif
 
 " open NERDTree on vim/gvim/macvim startup
 if !exists('g:nerdtree_tabs_open_on_startup')
-  let g:nerdtree_tabs_open_on_startup = 1
+  let g:nerdtree_tabs_open_on_startup = 0
 endif
 
 " open NERDTree on new tab creation
