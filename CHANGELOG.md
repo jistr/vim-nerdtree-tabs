@@ -2,11 +2,13 @@
 
 ## v0.2.0
 
-* better solution for opening NERDTree on tab creation (fixes wrong behavior in
+* Better solution for opening NERDTree on tab creation (fixes wrong behavior in
   improbable situations)
-* global variables for configuration
+* Global variables for configuration
+* Tab autoclose
+* Readme
 
 
 ## v0.1.0
 
-* new mappings and a command, otherwise original functionality preserved while making it namespaced
+* New mappings and a command, otherwise original functionality preserved while making it namespaced
