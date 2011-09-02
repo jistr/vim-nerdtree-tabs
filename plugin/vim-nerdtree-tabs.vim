@@ -1,5 +1,3 @@
-" TODO: preserve NERDTree cursor and scroll position across tabs
-
 " === plugin configuration variables ===
 
 " open NERDTree on gvim/macvim startup
@@ -44,15 +42,15 @@ command NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
 " === rest of the code ===
 
 " global on/off NERDTree state
-let s:nerd_tree_globally_active = 0
+let s:nerdtree_globally_active = 0
 
 " automatic NERDTree mirroring on tab switch
 function s:NERDTreeMirrorIfGloballyActive()
-  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
+  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
   let l:previous_winnr = winnr("$")
-  if s:nerd_tree_globally_active && !l:nerd_tree_open
+  if s:nerdtree_globally_active && !l:nerdtree_open
     silent NERDTreeMirror
 
     " if the window count of current tab changed, it means that NERDTreeMirror
@@ -65,7 +63,7 @@ endfunction
 
 " close NERDTree across all tabs
 function s:NERDTreeCloseAllTabs()
-  let s:nerd_tree_globally_active = 0
+  let s:nerdtree_globally_active = 0
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
@@ -75,11 +73,11 @@ endfunction
 
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
 function s:NERDTreeMirrorOrCreate()
-  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
+  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
   let l:previous_winnr = winnr("$")
-  if !l:nerd_tree_open
+  if !l:nerdtree_open
     silent NERDTreeMirror
 
     " if the window count of current tab didn't increase after NERDTreeMirror,
@@ -93,7 +91,7 @@ endfunction
 
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
 function s:NERDTreeMirrorOrCreateAllTabs()
-  let s:nerd_tree_globally_active = 1
+  let s:nerdtree_globally_active = 1
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
@@ -103,9 +101,9 @@ endfunction
 
 " toggle NERDTree in current tab and match the state in all other tabs
 function s:NERDTreeToggleAllTabs()
-  let l:nerd_tree_open = s:IsNERDTreeOpenInCurrentTab()
+  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
-  if l:nerd_tree_open
+  if l:nerdtree_open
     call s:NERDTreeCloseAllTabs()
   else
     call s:NERDTreeMirrorOrCreateAllTabs()
@@ -134,8 +132,8 @@ endfunction
 " check if NERDTree is open in current tab
 function s:IsNERDTreeOpenInCurrentTab()
   let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
-  let l:nerd_tree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
-  return l:nerd_tree_active
+  let l:nerdtree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
+  return l:nerdtree_active
 endfunction
 
 function s:SaveNERDTreeViewIfPossible()
