@@ -7,6 +7,11 @@ if !exists('g:nerdtree_tabs_open_on_gui_startup')
   let g:nerdtree_tabs_open_on_gui_startup = 1
 endif
 
+" open NERDTree on vim/gvim/macvim startup
+if !exists('g:nerdtree_tabs_open_on_startup')
+  let g:nerdtree_tabs_open_on_startup = 1
+endif
+
 " open NERDTree on new tab creation
 if !exists('g:nerdtree_tabs_open_on_new_tab')
   let g:nerdtree_tabs_open_on_new_tab = 1
@@ -135,6 +140,12 @@ fun s:GuiEnterHandler()
   endif
 endfun
 
+fun s:VimEnterHandler()
+  if g:nerdtree_tabs_open_on_startup
+    call s:NERDTreeMirrorOrCreateAllTabs()
+  endif
+endfun
+
 fun s:TabEnterHandler()
   if g:nerdtree_tabs_open_on_new_tab
     call s:NERDTreeMirrorIfGloballyActive()
@@ -154,6 +165,7 @@ fun s:WinEnterHandler()
 endfun
 
 autocmd GuiEnter * silent call <SID>GuiEnterHandler()
+autocmd VimEnter * silent call <SID>VimEnterHandler()
 autocmd TabEnter * silent call <SID>TabEnterHandler()
 autocmd TabLeave * silent call <SID>TabLeaveHandler()
 autocmd WinEnter * silent call <SID>WinEnterHandler()

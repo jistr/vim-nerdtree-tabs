@@ -6,6 +6,7 @@
   improbable situations)
 * Global variables for configuration
 * Tab autoclose
+* Option to open NERDTree on console vim startup, stays false by default
 * Readme
 
 
