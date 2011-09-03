@@ -21,17 +21,15 @@ tabs as much as possible. Read on for details.
 
 You'll get one new command: `:NERDTreeTabsToggle`
 
-For the needs of most of us, this is the only command to operate NERDTree from
-now on, so make sure to map it on a key combo ;) Press it once, NERDTree opens
-in all tabs (even in new tabs created from now on); press it again, NERDTree
-closes in all tabs.
+For the needs of most of us, this is the only command needed to operate
+NERDTree. Press it once, NERDTree opens in all tabs (even in new tabs created
+from now on); press it again, NERDTree closes in all tabs.
 
 ### Just one NERDTree
 
 Tired of having a fully collapsed NERDTree every time you open a new tab?
 Vim-nerdtree-tabs will keep them all synchronized. You will get just one
-NERDTree buffer for all your tabs. As long as you open NERDTree using the
-:NERDTreeTabsToggle command, that is.
+NERDTree buffer for all your tabs.
 
 ### Sync to the max
 
@@ -46,8 +44,8 @@ the name of the file you are editing.
 
 ### Close the file = close the tab
 
-Tab with NERDTree and a file won't hang open when you close the file. NERDTree
-will close automatically and so will the tab.
+A tab with NERDTree and a file won't hang open when you close the file window.
+NERDTree will close automatically and so will the tab.
 
 ### Autoopen on startup
 
@@ -57,8 +55,8 @@ to open on console Vim as well, but this is disabled by default.
 ## Configuration
 
 You can switch on/off some features of the plugin by setting global vars to 1
-(that means on) or 0 (that means off) in your vimrc. Here are the options and
-their default values:
+(for on) or 0 (for off) in your vimrc. Here are the options and their default
+values:
 
 * `let g:nerdtree_tabs_open_on_gui_startup = 1`  
   Open NERDTree on gvim/macvim startup

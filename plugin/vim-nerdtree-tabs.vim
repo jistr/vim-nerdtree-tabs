@@ -81,8 +81,7 @@ function s:NERDTreeMirrorOrCreate()
     silent NERDTreeMirror
 
     " if the window count of current tab didn't increase after NERDTreeMirror,
-    " it means NERDTreeMirror was unsuccessful (no NERDTree buffer exists) and
-    " a new NERDTree has to be created
+    " it means NERDTreeMirror was unsuccessful and a new NERDTree has to be created
     if l:previous_winnr == winnr("$")
       silent NERDTreeToggle
     endif
@@ -107,6 +106,10 @@ function s:NERDTreeToggleAllTabs()
     call s:NERDTreeCloseAllTabs()
   else
     call s:NERDTreeMirrorOrCreateAllTabs()
+    " force focus to NERDTree in current tab
+    if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+      exe bufwinnr(t:NERDTreeBufName) . "wincmd w"
+    endif
   endif
 endfunction
 
@@ -120,12 +123,8 @@ endfunction
 " Close all open buffers on entering a window if the only
 " buffer that's left is the NERDTree buffer
 function s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
-      endif
-    endif
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
+    q
   endif
 endfunction
 
@@ -197,10 +196,10 @@ fun s:WinLeaveHandler()
   endif
 endfun
 
-autocmd GuiEnter * silent call <SID>GuiEnterHandler()
-autocmd VimEnter * silent call <SID>VimEnterHandler()
-autocmd TabEnter * silent call <SID>TabEnterHandler()
-autocmd TabLeave * silent call <SID>TabLeaveHandler()
-autocmd WinEnter * silent call <SID>WinEnterHandler()
-autocmd WinLeave * silent call <SID>WinLeaveHandler()
+autocmd GuiEnter * call <SID>GuiEnterHandler()
+autocmd VimEnter * call <SID>VimEnterHandler()
+autocmd TabEnter * call <SID>TabEnterHandler()
+autocmd TabLeave * call <SID>TabLeaveHandler()
+autocmd WinEnter * call <SID>WinEnterHandler()
+autocmd WinLeave * call <SID>WinLeaveHandler()
 
