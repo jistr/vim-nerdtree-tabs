@@ -34,9 +34,11 @@ endif
 
 " === plugin mappings ===
 noremap <silent> <unique> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
+noremap <silent> <unique> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 
 " === plugin commands ===
 command NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
+command NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 
 
 " === rest of the code ===
@@ -113,6 +115,17 @@ function s:NERDTreeToggleAllTabs()
   endif
 endfunction
 
+" toggle NERDTree in current tab, use mirror if possible
+function s:NERDTreeMirrorToggle()
+  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
+
+  if l:nerdtree_open
+    silent NERDTreeClose
+  else
+    call s:NERDTreeMirrorOrCreate()
+  endif
+endfunction
+
 " if the current window is NERDTree, move focus to the next window
 function s:NERDTreeUnfocus()
   if match(bufname('%'), 'NERD_tree_\d\+') == 0
@@ -137,7 +150,12 @@ endfunction
 
 function s:SaveNERDTreeViewIfPossible()
   if match(bufname('%'), 'NERD_tree_\d\+') == 0
+    " save scroll and cursor etc.
     let s:nerdtree_view = winsaveview()
+
+    " save buffer name (to be able to correct desync by commands spawning
+    " a new NERDTree instance)
+    let s:nerdtree_buffer = bufname("%")
   endif
 endfunction
 
@@ -148,12 +166,18 @@ function s:RestoreNERDTreeViewIfPossible()
     let l:current_winnr = winnr()
     let l:nerdtree_winnr = bufwinnr(t:NERDTreeBufName)
 
+    " switch to NERDTree window
     exe l:nerdtree_winnr . "wincmd w"
+    " load the correct NERDTree buffer if not already loaded
+    if exists('s:nerdtree_buffer') && t:NERDTreeBufName != s:nerdtree_buffer
+      silent NERDTreeClose
+      silent NERDTreeMirror
+    endif
+    " restore cursor and scroll
     call winrestview(s:nerdtree_view)
     exe l:current_winnr . "wincmd w"
   endif
 endfunction
-
 
 " === event handlers ===
 

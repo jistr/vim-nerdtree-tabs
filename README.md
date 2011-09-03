@@ -14,14 +14,14 @@
 ## Features
 
 In short, this vim plugin aims at making **NERDTree feel like a true panel**,
-independent of tabs. That is done by keeping the NERDTree synchronized between
+independent of tabs. That is done by keeping NERDTree synchronized between
 tabs as much as possible. Read on for details.
 
 ### One command, open everywhere, close everywhere
 
-You'll get one new command: `:NERDTreeTabsToggle`
+You'll get a new command: `:NERDTreeTabsToggle`
 
-For the needs of most of us, this is the only command needed to operate
+For the needs of most of us, this will be the only command needed to operate
 NERDTree. Press it once, NERDTree opens in all tabs (even in new tabs created
 from now on); press it again, NERDTree closes in all tabs.
 
@@ -51,6 +51,23 @@ NERDTree will close automatically and so will the tab.
 
 NERDTree will open automatically on GVim/MacVim startup. You can configure it
 to open on console Vim as well, but this is disabled by default.
+
+## Commands and mappings
+
+Vim-nerdtree-tabs defines two commands:
+
+* `:NERDTreeTabsToggle` switches NERDTree on/off for all tabs.
+
+* `:NERDTreeMirrorToggle` acts as `:NERDTreeToggle`, but smarter: When opening,
+  it first tries to use an existing tree (i.e. previously closed in this tab or
+  perform a mirror of another tab's tree). If all this fails, a new tree is
+  created. ** It is recommended that you always use this command instead of
+  `:NERDTreeToggle`. **
+
+There are also plug-mappings available with the same functionality:
+
+* `<plug>NERDTreeTabsToggle`
+* `<plug>NERDTreeMirrorToggle`
 
 ## Configuration
 

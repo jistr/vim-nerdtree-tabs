@@ -3,6 +3,9 @@
 ## v1.0.0
 
 * NERDTree view synchronization (cursor position and scroll) across tabs
+* Fix: focus is now on NERDTree when opening it in all tabs.
+* If you create more NERDTree instances, nerdtree-tabs now tries hard to sync
+  all tabs to the last opened one.
 
 ## v0.2.0
 
