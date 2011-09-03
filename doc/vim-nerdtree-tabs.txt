@@ -1,4 +1,5 @@
-# NERDTree and tabs together in Vim, painlessly
+# NERDTree and tabs together in Vim, painlessly          *vim-nerdtree-tabs*
+                                                             *nerdtree-tabs*
 
 ## Installation
 
@@ -55,9 +56,10 @@ to open on console Vim as well, but this is disabled by default.
 ## Commands and mappings
 
 Vim-nerdtree-tabs defines two commands:
-
+                                                          *:NERDTreeTabsToggle*
 * `:NERDTreeTabsToggle` switches NERDTree on/off for all tabs.
 
+                                                        *:NERDTreeMirrorToggle*
 * `:NERDTreeMirrorToggle` acts as `:NERDTreeToggle`, but smarter: When opening,
   it first tries to use an existing tree (i.e. previously closed in this tab or
   perform a mirror of another tab's tree). If all this fails, a new tree is
