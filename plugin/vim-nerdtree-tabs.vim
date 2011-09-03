@@ -128,7 +128,7 @@ endfunction
 
 " if the current window is NERDTree, move focus to the next window
 function s:NERDTreeUnfocus()
-  if match(bufname('%'), 'NERD_tree_\d\+') == 0
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     wincmd w
   endif
 endfunction
@@ -143,13 +143,12 @@ endfunction
 
 " check if NERDTree is open in current tab
 function s:IsNERDTreeOpenInCurrentTab()
-  let l:active_buffers_current_tab = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname(v:val)')
-  let l:nerdtree_active = -1 != match(l:active_buffers_current_tab, 'NERD_tree_\d\+')
+  let l:nerdtree_active = exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
   return l:nerdtree_active
 endfunction
 
 function s:SaveNERDTreeViewIfPossible()
-  if match(bufname('%'), 'NERD_tree_\d\+') == 0
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     " save scroll and cursor etc.
     let s:nerdtree_view = winsaveview()
 
