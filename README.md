@@ -61,8 +61,8 @@ Vim-nerdtree-tabs defines two commands:
 * `:NERDTreeMirrorToggle` acts as `:NERDTreeToggle`, but smarter: When opening,
   it first tries to use an existing tree (i.e. previously closed in this tab or
   perform a mirror of another tab's tree). If all this fails, a new tree is
-  created. ** It is recommended that you always use this command instead of
-  `:NERDTreeToggle`. **
+  created. **It is recommended that you always use this command instead of
+  `:NERDTreeToggle`.**
 
 There are also plug-mappings available with the same functionality:
 
