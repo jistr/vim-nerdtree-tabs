@@ -2,7 +2,7 @@
 
 ## Installation
 
-1. Copy the plugin to your vim config dir (via pathogen or any way you want).
+1. Copy the plugin into your vim config dir (via pathogen for example).
 
 2. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
    Alternatively, you can use plug-mapping instead of a command, like this:
@@ -13,46 +13,22 @@
 
 ## Features
 
-In short, this vim plugin aims at making **NERDTree feel like a true panel**,
-independent of tabs. That is done by keeping NERDTree synchronized between
-tabs as much as possible. Read on for details.
+This plugin aims at making NERDTree feel like a true panel, independent of tabs.
 
-### One command, open everywhere, close everywhere
+* **Just one NERDTree**, always and ever. It will always look the same in
+  all tabs, including expanded/collapsed nodes, scroll position etc.
 
-You'll get a new command: `:NERDTreeTabsToggle`
+* Open in all tabs / close in all tabs. Do this via `:NERDTreeTabsToggle`
 
-For the needs of most of us, this will be the only command needed to operate
-NERDTree. Press it once, NERDTree opens in all tabs (even in new tabs created
-from now on); press it again, NERDTree closes in all tabs.
+* Meaningful tab captions. No more captions like 'NERD_tree_1'.
 
-### Just one NERDTree
+* When you close a file, the tab closes with it. No NERDTree hanging open.
 
-Tired of having a fully collapsed NERDTree every time you open a new tab?
-Vim-nerdtree-tabs will keep them all synchronized. You will get just one
-NERDTree buffer for all your tabs.
+* Autoopen NERDTree on GVim / MacVim startup.
 
-### Sync to the max
+Many of these features can be switched off. See section Configuration.
 
-All NERDTree windows will always have the same scroll and cursor position.
-
-### Meaningful tab captions
-
-You know the feeling when you want to switch to *that file* and you have 8 tabs
-open and they are all named 'NERD_tree_1'? Won't happen again. When leaving
-a tab, vim-nerdtree-tabs moves focus out of NERDTree so that the tab caption is
-the name of the file you are editing.
-
-### Close the file = close the tab
-
-A tab with NERDTree and a file won't hang open when you close the file window.
-NERDTree will close automatically and so will the tab.
-
-### Autoopen on startup
-
-NERDTree will open automatically on GVim/MacVim startup. You can configure it
-to open on console Vim as well, but this is disabled by default.
-
-## Commands and mappings
+## Commands and Mappings
 
 Vim-nerdtree-tabs defines two commands:
 
@@ -61,8 +37,7 @@ Vim-nerdtree-tabs defines two commands:
 * `:NERDTreeMirrorToggle` acts as `:NERDTreeToggle`, but smarter: When opening,
   it first tries to use an existing tree (i.e. previously closed in this tab or
   perform a mirror of another tab's tree). If all this fails, a new tree is
-  created. **It is recommended that you always use this command instead of
-  `:NERDTreeToggle`.**
+  created. It is recommended that you use this command instead of `:NERDTreeToggle`.
 
 There are also plug-mappings available with the same functionality:
 
