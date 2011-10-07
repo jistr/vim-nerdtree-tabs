@@ -1,4 +1,5 @@
 # NERDTree and tabs together in Vim, painlessly
+[![](http://stillmaintained.com/jistr/vim-nerdtree-tabs.png)](http://stillmaintained.com/jistr/vim-nerdtree-tabs)
 
 ## Installation
 
