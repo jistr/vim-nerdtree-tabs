@@ -33,12 +33,12 @@ if !exists('g:nerdtree_tabs_synchronize_view')
 endif
 
 " === plugin mappings ===
-noremap <silent> <unique> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
-noremap <silent> <unique> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
+noremap! <silent> <unique> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
+noremap! <silent> <unique> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 
 " === plugin commands ===
-command NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
-command NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
+command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
+command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 
 
 " === rest of the code ===
@@ -47,7 +47,7 @@ command NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 let s:nerdtree_globally_active = 0
 
 " automatic NERDTree mirroring on tab switch
-function s:NERDTreeMirrorIfGloballyActive()
+function! s:NERDTreeMirrorIfGloballyActive()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
@@ -64,7 +64,7 @@ function s:NERDTreeMirrorIfGloballyActive()
 endfunction
 
 " close NERDTree across all tabs
-function s:NERDTreeCloseAllTabs()
+function! s:NERDTreeCloseAllTabs()
   let s:nerdtree_globally_active = 0
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
@@ -74,7 +74,7 @@ function s:NERDTreeCloseAllTabs()
 endfunction
 
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
-function s:NERDTreeMirrorOrCreate()
+function! s:NERDTreeMirrorOrCreate()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
@@ -91,7 +91,7 @@ function s:NERDTreeMirrorOrCreate()
 endfunction
 
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
-function s:NERDTreeMirrorOrCreateAllTabs()
+function! s:NERDTreeMirrorOrCreateAllTabs()
   let s:nerdtree_globally_active = 1
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
@@ -101,7 +101,7 @@ function s:NERDTreeMirrorOrCreateAllTabs()
 endfunction
 
 " toggle NERDTree in current tab and match the state in all other tabs
-function s:NERDTreeToggleAllTabs()
+function! s:NERDTreeToggleAllTabs()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   if l:nerdtree_open
@@ -116,7 +116,7 @@ function s:NERDTreeToggleAllTabs()
 endfunction
 
 " toggle NERDTree in current tab, use mirror if possible
-function s:NERDTreeMirrorToggle()
+function! s:NERDTreeMirrorToggle()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   if l:nerdtree_open
@@ -127,7 +127,7 @@ function s:NERDTreeMirrorToggle()
 endfunction
 
 " if the current window is NERDTree, move focus to the next window
-function s:NERDTreeUnfocus()
+function! s:NERDTreeUnfocus()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     wincmd w
   endif
@@ -135,19 +135,19 @@ endfunction
 
 " Close all open buffers on entering a window if the only
 " buffer that's left is the NERDTree buffer
-function s:CloseIfOnlyNerdTreeLeft()
+function! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
     q
   endif
 endfunction
 
 " check if NERDTree is open in current tab
-function s:IsNERDTreeOpenInCurrentTab()
+function! s:IsNERDTreeOpenInCurrentTab()
   let l:nerdtree_active = exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
   return l:nerdtree_active
 endfunction
 
-function s:SaveNERDTreeViewIfPossible()
+function! s:SaveNERDTreeViewIfPossible()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     " save scroll and cursor etc.
     let s:nerdtree_view = winsaveview()
@@ -158,7 +158,7 @@ function s:SaveNERDTreeViewIfPossible()
   endif
 endfunction
 
-function s:RestoreNERDTreeViewIfPossible()
+function! s:RestoreNERDTreeViewIfPossible()
   " if nerdtree exists in current tab, it is the current window and if saved
   " state is available, restore it
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && exists('s:nerdtree_view')
@@ -180,19 +180,19 @@ endfunction
 
 " === event handlers ===
 
-fun s:GuiEnterHandler()
+fun! s:GuiEnterHandler()
   if g:nerdtree_tabs_open_on_gui_startup
     call s:NERDTreeMirrorOrCreateAllTabs()
   endif
 endfun
 
-fun s:VimEnterHandler()
+fun! s:VimEnterHandler()
   if g:nerdtree_tabs_open_on_console_startup && !has('gui_running')
     call s:NERDTreeMirrorOrCreateAllTabs()
   endif
 endfun
 
-fun s:TabEnterHandler()
+fun! s:TabEnterHandler()
   if g:nerdtree_tabs_open_on_new_tab
     call s:NERDTreeMirrorIfGloballyActive()
   endif
@@ -201,19 +201,19 @@ fun s:TabEnterHandler()
   endif
 endfun
 
-fun s:TabLeaveHandler()
+fun! s:TabLeaveHandler()
   if g:nerdtree_tabs_meaningful_tab_names
     call s:NERDTreeUnfocus()
   endif
 endfun
 
-fun s:WinEnterHandler()
+fun! s:WinEnterHandler()
   if g:nerdtree_tabs_autoclose
     call s:CloseIfOnlyNerdTreeLeft()
   endif
 endfun
 
-fun s:WinLeaveHandler()
+fun! s:WinLeaveHandler()
   if g:nerdtree_tabs_synchronize_view
     call s:SaveNERDTreeViewIfPossible()
   endif
