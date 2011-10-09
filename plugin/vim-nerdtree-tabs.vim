@@ -33,8 +33,8 @@ if !exists('g:nerdtree_tabs_synchronize_view')
 endif
 
 " === plugin mappings ===
-noremap! <silent> <unique> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
-noremap! <silent> <unique> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
+noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
+noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 
 " === plugin commands ===
 command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
