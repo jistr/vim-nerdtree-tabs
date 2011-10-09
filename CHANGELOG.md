@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.0.1
+
+* Plugin is usable with vundle.
+
 ## v1.0.0
 
 * NERDTree view synchronization (cursor position and scroll) across tabs
