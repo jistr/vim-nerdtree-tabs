@@ -47,7 +47,7 @@ command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 let s:nerdtree_globally_active = 0
 
 " automatic NERDTree mirroring on tab switch
-function! s:NERDTreeMirrorIfGloballyActive()
+fun! s:NERDTreeMirrorIfGloballyActive()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
@@ -61,20 +61,20 @@ function! s:NERDTreeMirrorIfGloballyActive()
       wincmd w
     endif
   endif
-endfunction
+endfun
 
 " close NERDTree across all tabs
-function! s:NERDTreeCloseAllTabs()
+fun! s:NERDTreeCloseAllTabs()
   let s:nerdtree_globally_active = 0
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
   tabdo silent NERDTreeClose
   exe 'tabn ' . l:current_tab
-endfunction
+endfun
 
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
-function! s:NERDTreeMirrorOrCreate()
+fun! s:NERDTreeMirrorOrCreate()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
@@ -88,20 +88,20 @@ function! s:NERDTreeMirrorOrCreate()
       silent NERDTreeToggle
     endif
   endif
-endfunction
+endfun
 
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
-function! s:NERDTreeMirrorOrCreateAllTabs()
+fun! s:NERDTreeMirrorOrCreateAllTabs()
   let s:nerdtree_globally_active = 1
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
   tabdo call s:NERDTreeMirrorOrCreate()
   exe 'tabn ' . l:current_tab
-endfunction
+endfun
 
 " toggle NERDTree in current tab and match the state in all other tabs
-function! s:NERDTreeToggleAllTabs()
+fun! s:NERDTreeToggleAllTabs()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   if l:nerdtree_open
@@ -113,10 +113,10 @@ function! s:NERDTreeToggleAllTabs()
       exe bufwinnr(t:NERDTreeBufName) . "wincmd w"
     endif
   endif
-endfunction
+endfun
 
 " toggle NERDTree in current tab, use mirror if possible
-function! s:NERDTreeMirrorToggle()
+fun! s:NERDTreeMirrorToggle()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   if l:nerdtree_open
@@ -124,30 +124,30 @@ function! s:NERDTreeMirrorToggle()
   else
     call s:NERDTreeMirrorOrCreate()
   endif
-endfunction
+endfun
 
 " if the current window is NERDTree, move focus to the next window
-function! s:NERDTreeUnfocus()
+fun! s:NERDTreeUnfocus()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     wincmd w
   endif
-endfunction
+endfun
 
 " Close all open buffers on entering a window if the only
 " buffer that's left is the NERDTree buffer
-function! s:CloseIfOnlyNerdTreeLeft()
+fun! s:CloseIfOnlyNerdTreeLeft()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
     q
   endif
-endfunction
+endfun
 
 " check if NERDTree is open in current tab
-function! s:IsNERDTreeOpenInCurrentTab()
+fun! s:IsNERDTreeOpenInCurrentTab()
   let l:nerdtree_active = exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
   return l:nerdtree_active
-endfunction
+endfun
 
-function! s:SaveNERDTreeViewIfPossible()
+fun! s:SaveNERDTreeViewIfPossible()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     " save scroll and cursor etc.
     let s:nerdtree_view = winsaveview()
@@ -156,9 +156,9 @@ function! s:SaveNERDTreeViewIfPossible()
     " a new NERDTree instance)
     let s:nerdtree_buffer = bufname("%")
   endif
-endfunction
+endfun
 
-function! s:RestoreNERDTreeViewIfPossible()
+fun! s:RestoreNERDTreeViewIfPossible()
   " if nerdtree exists in current tab, it is the current window and if saved
   " state is available, restore it
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && exists('s:nerdtree_view')
@@ -176,7 +176,7 @@ function! s:RestoreNERDTreeViewIfPossible()
     call winrestview(s:nerdtree_view)
     exe l:current_winnr . "wincmd w"
   endif
-endfunction
+endfun
 
 " === event handlers ===
 
