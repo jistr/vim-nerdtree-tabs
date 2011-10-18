@@ -235,10 +235,13 @@ fun! s:WinLeaveHandler()
   endif
 endfun
 
-autocmd GuiEnter * call <SID>GuiEnterHandler()
-autocmd VimEnter * call <SID>VimEnterHandler()
-autocmd TabEnter * call <SID>TabEnterHandler()
-autocmd TabLeave * call <SID>TabLeaveHandler()
-autocmd WinEnter * call <SID>WinEnterHandler()
-autocmd WinLeave * call <SID>WinLeaveHandler()
+if !exists('g:nerdtree_tabs_autocmds_loaded')
+  autocmd GuiEnter * call <SID>GuiEnterHandler()
+  autocmd VimEnter * call <SID>VimEnterHandler()
+  autocmd TabEnter * call <SID>TabEnterHandler()
+  autocmd TabLeave * call <SID>TabLeaveHandler()
+  autocmd WinEnter * call <SID>WinEnterHandler()
+  autocmd WinLeave * call <SID>WinLeaveHandler()
+  let g:nerdtree_tabs_autocmds_loaded = 1
+end
 
