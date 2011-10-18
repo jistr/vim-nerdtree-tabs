@@ -131,8 +131,18 @@ endfun
 
 " if the current window is NERDTree, move focus to the next window
 fun! s:NERDTreeUnfocus()
+  " save current window so that it's focus can be restored after switching
+  " back to this tab
+  let t:NERDTreeTabLastWindow = winnr()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     wincmd w
+  endif
+endfun
+
+" restore focus to the window that was focused before leaving current tab
+fun! s:RestoreFocus()
+  if exists("t:NERDTreeTabLastWindow")
+    exe t:NERDTreeTabLastWindow . "wincmd w"
   endif
 endfun
 
@@ -201,6 +211,9 @@ fun! s:TabEnterHandler()
   endif
   if g:nerdtree_tabs_synchronize_view
     call s:RestoreNERDTreeViewIfPossible()
+  endif
+  if g:nerdtree_tabs_meaningful_tab_names
+    call s:RestoreFocus()
   endif
 endfun
 
