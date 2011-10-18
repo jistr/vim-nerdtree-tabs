@@ -32,6 +32,12 @@ if !exists('g:nerdtree_tabs_synchronize_view')
   let g:nerdtree_tabs_synchronize_view = 1
 endif
 
+" when switching into a tab, make sure that focus will always be in file
+" editing window, not in NERDTree window
+if !exists('g:nerdtree_tabs_focus_on_files')
+  let g:nerdtree_tabs_focus_on_files = 0
+endif
+
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
@@ -212,8 +218,14 @@ fun! s:TabEnterHandler()
   if g:nerdtree_tabs_synchronize_view
     call s:RestoreNERDTreeViewIfPossible()
   endif
-  if g:nerdtree_tabs_meaningful_tab_names
+
+  if g:nerdtree_tabs_meaningful_tab_names && !g:nerdtree_tabs_focus_on_files
     call s:RestoreFocus()
+  endif
+
+  " this one is necessary in case meaningful_tab_names is off
+  if g:nerdtree_tabs_focus_on_files
+    call s:NERDTreeUnfocus()
   endif
 endfun
 

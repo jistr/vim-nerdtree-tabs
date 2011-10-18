@@ -1,5 +1,13 @@
 # vim-nerdtree-tabs changelog
 
+## v1.1.0
+
+* Meaningful tab names feature doesn't collide with opening new tabs silently.
+  To accomplish that, tab switching now preserves window focus. The original
+  behavior that always kept focus in the window with file being edited can be
+  restored by `let g:nerdtree_tabs_focus_on_files = 1`.
+* Removed glitches when sourcing the plugin more than once.
+
 ## v1.0.1
 
 * Plugin is usable with vundle.
