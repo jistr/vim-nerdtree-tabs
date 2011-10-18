@@ -32,6 +32,12 @@ if !exists('g:nerdtree_tabs_synchronize_view')
   let g:nerdtree_tabs_synchronize_view = 1
 endif
 
+" when switching into a tab, make sure that focus will always be in file
+" editing window, not in NERDTree window
+if !exists('g:nerdtree_tabs_focus_on_files')
+  let g:nerdtree_tabs_focus_on_files = 0
+endif
+
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
@@ -44,7 +50,10 @@ command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 " === rest of the code ===
 
 " global on/off NERDTree state
-let s:nerdtree_globally_active = 0
+" the exists check is to enable script reloading without resetting the state
+if !exists('s:nerdtree_globally_active')
+  let s:nerdtree_globally_active = 0
+endif
 
 " automatic NERDTree mirroring on tab switch
 fun! s:NERDTreeMirrorIfGloballyActive()
@@ -128,8 +137,18 @@ endfun
 
 " if the current window is NERDTree, move focus to the next window
 fun! s:NERDTreeUnfocus()
+  " save current window so that it's focus can be restored after switching
+  " back to this tab
+  let t:NERDTreeTabLastWindow = winnr()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     wincmd w
+  endif
+endfun
+
+" restore focus to the window that was focused before leaving current tab
+fun! s:RestoreFocus()
+  if exists("t:NERDTreeTabLastWindow")
+    exe t:NERDTreeTabLastWindow . "wincmd w"
   endif
 endfun
 
@@ -199,6 +218,15 @@ fun! s:TabEnterHandler()
   if g:nerdtree_tabs_synchronize_view
     call s:RestoreNERDTreeViewIfPossible()
   endif
+
+  if g:nerdtree_tabs_meaningful_tab_names && !g:nerdtree_tabs_focus_on_files
+    call s:RestoreFocus()
+  endif
+
+  " this one is necessary in case meaningful_tab_names is off
+  if g:nerdtree_tabs_focus_on_files
+    call s:NERDTreeUnfocus()
+  endif
 endfun
 
 fun! s:TabLeaveHandler()
@@ -219,10 +247,13 @@ fun! s:WinLeaveHandler()
   endif
 endfun
 
-autocmd GuiEnter * call <SID>GuiEnterHandler()
-autocmd VimEnter * call <SID>VimEnterHandler()
-autocmd TabEnter * call <SID>TabEnterHandler()
-autocmd TabLeave * call <SID>TabLeaveHandler()
-autocmd WinEnter * call <SID>WinEnterHandler()
-autocmd WinLeave * call <SID>WinLeaveHandler()
+if !exists('g:nerdtree_tabs_autocmds_loaded')
+  autocmd GuiEnter * call <SID>GuiEnterHandler()
+  autocmd VimEnter * call <SID>VimEnterHandler()
+  autocmd TabEnter * call <SID>TabEnterHandler()
+  autocmd TabLeave * call <SID>TabLeaveHandler()
+  autocmd WinEnter * call <SID>WinEnterHandler()
+  autocmd WinLeave * call <SID>WinLeaveHandler()
+  let g:nerdtree_tabs_autocmds_loaded = 1
+end
 

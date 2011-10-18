@@ -96,6 +96,12 @@ values:
 * `let g:nerdtree_tabs_synchronize_view = 1`  
   Synchronize view of all NERDTree windows (scroll and cursor position)
 
+* `let g:nerdtree_tabs_focus_on_files = 0`  
+  When switching into a tab, make sure that focus is on the file window,
+  not in the NERDTree window. (Note that this can get annoying if you use
+  NERDTree's feature "open in new tab silently", as you will lose focus on the
+  NERDTree.)
+
 ## Credits
 
 * The tab autoclose feature is stolen from Carl Lerche & Yehuda Katz's
