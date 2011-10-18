@@ -44,7 +44,10 @@ command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 " === rest of the code ===
 
 " global on/off NERDTree state
-let s:nerdtree_globally_active = 0
+" the exists check is to enable script reloading without resetting the state
+if !exists('s:nerdtree_globally_active')
+  let s:nerdtree_globally_active = 0
+endif
 
 " automatic NERDTree mirroring on tab switch
 fun! s:NERDTreeMirrorIfGloballyActive()
