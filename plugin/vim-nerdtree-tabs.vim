@@ -49,6 +49,8 @@ command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 
 " === rest of the code ===
 
+let s:disable_handlers_for_tabdo = 0
+
 " global on/off NERDTree state
 " the exists check is to enable script reloading without resetting the state
 if !exists('s:nerdtree_globally_active')
@@ -112,6 +114,7 @@ endfun
 " toggle NERDTree in current tab and match the state in all other tabs
 fun! s:NERDTreeToggleAllTabs()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
+  let s:disable_handlers_for_tabdo = 1
 
   if l:nerdtree_open
     call s:NERDTreeCloseAllTabs()
@@ -122,6 +125,8 @@ fun! s:NERDTreeToggleAllTabs()
       exe bufwinnr(t:NERDTreeBufName) . "wincmd w"
     endif
   endif
+
+  let s:disable_handlers_for_tabdo = 0
 endfun
 
 " toggle NERDTree in current tab, use mirror if possible
@@ -212,6 +217,10 @@ fun! s:VimEnterHandler()
 endfun
 
 fun! s:TabEnterHandler()
+  if s:disable_handlers_for_tabdo
+    return
+  endif
+
   if g:nerdtree_tabs_open_on_new_tab
     call s:NERDTreeMirrorIfGloballyActive()
   endif
@@ -236,12 +245,20 @@ fun! s:TabLeaveHandler()
 endfun
 
 fun! s:WinEnterHandler()
+  if s:disable_handlers_for_tabdo
+    return
+  endif
+
   if g:nerdtree_tabs_autoclose
     call s:CloseIfOnlyNerdTreeLeft()
   endif
 endfun
 
 fun! s:WinLeaveHandler()
+  if s:disable_handlers_for_tabdo
+    return
+  endif
+
   if g:nerdtree_tabs_synchronize_view
     call s:SaveNERDTreeViewIfPossible()
   endif
