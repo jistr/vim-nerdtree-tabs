@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.1.1
+
+* About 50% speedup when toggling NERDTree on across all tabs.
+
 ## v1.1.0
 
 * Meaningful tab names feature doesn't collide with opening new tabs silently.
