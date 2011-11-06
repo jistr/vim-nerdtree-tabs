@@ -21,7 +21,7 @@ This plugin aims at making NERDTree feel like a true panel, independent of tabs.
 
 * Open in all tabs / close in all tabs. Do this via `:NERDTreeTabsToggle`
 
-* Meaningful tab captions. No more captions like 'NERD_tree_1'.
+* Meaningful tab captions for inactive tabs. No more captions like 'NERD_tree_1'.
 
 * When you close a file, the tab closes with it. No NERDTree hanging open.
 
