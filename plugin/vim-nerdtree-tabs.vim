@@ -177,6 +177,12 @@ fun! s:IsNERDTreeOpenInCurrentTab()
   return l:nerdtree_active
 endfun
 
+" check if NERDTree is present in current tab (not necessarily visible)
+fun! s:IsNERDTreePresentInCurrentTab()
+  let l:nerdtree_present = exists("t:NERDTreeBufName")
+  return l:nerdtree_present
+endfun
+
 fun! s:SaveNERDTreeViewIfPossible()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
     " save scroll and cursor etc.
@@ -222,7 +228,9 @@ fun! s:VimEnterHandler()
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
-    call s:NERDTreeMirrorOrCreateAllTabs()
+    if !s:IsNERDTreePresentInCurrentTab()
+      call s:NERDTreeMirrorOrCreateAllTabs()
+    end
 
     if l:focus_file && g:nerdtree_tabs_smart_startup_focus
       exe bufwinnr(l:main_bufnr) . "wincmd w"
