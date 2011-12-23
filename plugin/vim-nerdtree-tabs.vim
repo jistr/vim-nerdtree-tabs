@@ -202,17 +202,35 @@ fun! s:RestoreNERDTreeViewIfPossible()
   endif
 endfun
 
+fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
+  return strlen(bufname('$')) == 0 || !&modifiable
+endfun
+
 " === event handlers ===
 
 fun! s:GuiEnterHandler()
+  let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
+  let l:main_bufnr = bufnr('%')
+
   if g:nerdtree_tabs_open_on_gui_startup
     call s:NERDTreeMirrorOrCreateAllTabs()
+  endif
+
+  if l:focus_file
+    exe bufwinnr(l:main_bufnr) . "wincmd w"
   endif
 endfun
 
 fun! s:VimEnterHandler()
   if g:nerdtree_tabs_open_on_console_startup && !has('gui_running')
+    let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
+    let l:main_bufnr = bufnr('%')
+
     call s:NERDTreeMirrorOrCreateAllTabs()
+
+    if l:focus_file
+      exe bufwinnr(l:main_bufnr) . "wincmd w"
+    endif
   endif
 endfun
 
