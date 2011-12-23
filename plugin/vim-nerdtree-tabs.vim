@@ -13,7 +13,7 @@ endif
 " On startup - focus NERDTree when opening a directory, focus the file if
 " editing a specified file
 if !exists('g:nerdtree_tabs_smart_startup_focus')
-  let g:nerdtree_tabs_smart_startup_focus = 0
+  let g:nerdtree_tabs_smart_startup_focus = 1
 endif
 
 " Open NERDTree on new tab creation if NERDTree was globally opened
