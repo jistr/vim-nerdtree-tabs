@@ -10,6 +10,12 @@ if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
 
+" On startup - focus NERDTree when opening a directory, focus the file if
+" editing a specified file
+if !exists('g:nerdtree_tabs_smart_startup_focus')
+  let g:nerdtree_tabs_smart_startup_focus = 0
+endif
+
 " Open NERDTree on new tab creation if NERDTree was globally opened
 " by :NERDTreeTabsToggle
 if !exists('g:nerdtree_tabs_open_on_new_tab')
@@ -208,27 +214,17 @@ endfun
 
 " === event handlers ===
 
-fun! s:GuiEnterHandler()
-  let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
-  let l:main_bufnr = bufnr('%')
-
-  if g:nerdtree_tabs_open_on_gui_startup
-    call s:NERDTreeMirrorOrCreateAllTabs()
-  endif
-
-  if l:focus_file
-    exe bufwinnr(l:main_bufnr) . "wincmd w"
-  endif
-endfun
-
 fun! s:VimEnterHandler()
-  if g:nerdtree_tabs_open_on_console_startup && !has('gui_running')
+  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
+                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+
+  if l:open_nerd_tree_on_startup
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
     call s:NERDTreeMirrorOrCreateAllTabs()
 
-    if l:focus_file
+    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
       exe bufwinnr(l:main_bufnr) . "wincmd w"
     endif
   endif
@@ -283,7 +279,6 @@ fun! s:WinLeaveHandler()
 endfun
 
 if !exists('g:nerdtree_tabs_autocmds_loaded')
-  autocmd GuiEnter * call <SID>GuiEnterHandler()
   autocmd VimEnter * call <SID>VimEnterHandler()
   autocmd TabEnter * call <SID>TabEnterHandler()
   autocmd TabLeave * call <SID>TabLeaveHandler()
