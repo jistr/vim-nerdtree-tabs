@@ -173,14 +173,12 @@ endfun
 
 " check if NERDTree is open in current tab
 fun! s:IsNERDTreeOpenInCurrentTab()
-  let l:nerdtree_active = exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
-  return l:nerdtree_active
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
 endfun
 
 " check if NERDTree is present in current tab (not necessarily visible)
 fun! s:IsNERDTreePresentInCurrentTab()
-  let l:nerdtree_present = exists("t:NERDTreeBufName")
-  return l:nerdtree_present
+  return exists("t:NERDTreeBufName")
 endfun
 
 fun! s:SaveNERDTreeViewIfPossible()
