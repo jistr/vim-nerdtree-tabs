@@ -10,6 +10,12 @@ if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
 
+" On startup - focus NERDTree when opening a directory, focus the file if
+" editing a specified file
+if !exists('g:nerdtree_tabs_smart_startup_focus')
+  let g:nerdtree_tabs_smart_startup_focus = 1
+endif
+
 " Open NERDTree on new tab creation if NERDTree was globally opened
 " by :NERDTreeTabsToggle
 if !exists('g:nerdtree_tabs_open_on_new_tab')
@@ -167,8 +173,12 @@ endfun
 
 " check if NERDTree is open in current tab
 fun! s:IsNERDTreeOpenInCurrentTab()
-  let l:nerdtree_active = exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
-  return l:nerdtree_active
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+endfun
+
+" check if NERDTree is present in current tab (not necessarily visible)
+fun! s:IsNERDTreePresentInCurrentTab()
+  return exists("t:NERDTreeBufName")
 endfun
 
 fun! s:SaveNERDTreeViewIfPossible()
@@ -202,17 +212,27 @@ fun! s:RestoreNERDTreeViewIfPossible()
   endif
 endfun
 
-" === event handlers ===
-
-fun! s:GuiEnterHandler()
-  if g:nerdtree_tabs_open_on_gui_startup
-    call s:NERDTreeMirrorOrCreateAllTabs()
-  endif
+fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
+  return strlen(bufname('$')) == 0 || !&modifiable
 endfun
 
+" === event handlers ===
+
 fun! s:VimEnterHandler()
-  if g:nerdtree_tabs_open_on_console_startup && !has('gui_running')
-    call s:NERDTreeMirrorOrCreateAllTabs()
+  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
+                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+
+  if l:open_nerd_tree_on_startup
+    let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
+    let l:main_bufnr = bufnr('%')
+
+    if !s:IsNERDTreePresentInCurrentTab()
+      call s:NERDTreeMirrorOrCreateAllTabs()
+    end
+
+    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
+      exe bufwinnr(l:main_bufnr) . "wincmd w"
+    endif
   endif
 endfun
 
@@ -265,7 +285,6 @@ fun! s:WinLeaveHandler()
 endfun
 
 if !exists('g:nerdtree_tabs_autocmds_loaded')
-  autocmd GuiEnter * call <SID>GuiEnterHandler()
   autocmd VimEnter * call <SID>VimEnterHandler()
   autocmd TabEnter * call <SID>TabEnterHandler()
   autocmd TabLeave * call <SID>TabLeaveHandler()

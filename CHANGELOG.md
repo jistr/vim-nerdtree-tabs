@@ -1,5 +1,10 @@
 # vim-nerdtree-tabs changelog
 
+## v1.1.2
+
+* Smart focus - on startup, focus NERDTree if opening a directory, focus the
+  file when opening a file.
+
 ## v1.1.1
 
 * About 50% speedup when toggling NERDTree on across all tabs.

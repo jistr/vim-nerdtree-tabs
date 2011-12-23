@@ -57,6 +57,10 @@ values:
 * `let g:nerdtree_tabs_open_on_console_startup = 0`  
   Open NERDTree on console vim startup
 
+* `let g:nerdtree_tabs_smart_startup_focus = 1`  
+  On startup, focus NERDTree if opening a directory, focus file if opening
+  a file.
+
 * `let g:nerdtree_tabs_open_on_new_tab = 1`  
   Open NERDTree on new tab creation (if NERDTree was globally opened by
   :NERDTreeTabsToggle)
