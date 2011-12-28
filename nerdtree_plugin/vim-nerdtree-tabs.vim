@@ -218,7 +218,11 @@ endfun
 
 " === event handlers ===
 
-fun! s:VimEnterHandler()
+fun! s:LoadPlugin()
+  if exists('g:nerdtree_tabs_autocmds_loaded')
+    return
+  endif
+
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
                                   \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
 
@@ -226,7 +230,7 @@ fun! s:VimEnterHandler()
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
-    if !s:IsNERDTreePresentInCurrentTab()
+    if !s:IsNERDTreeOpenInCurrentTab()
       call s:NERDTreeMirrorOrCreateAllTabs()
     end
 
@@ -285,11 +289,12 @@ fun! s:WinLeaveHandler()
 endfun
 
 if !exists('g:nerdtree_tabs_autocmds_loaded')
-  autocmd VimEnter * call <SID>VimEnterHandler()
   autocmd TabEnter * call <SID>TabEnterHandler()
   autocmd TabLeave * call <SID>TabLeaveHandler()
   autocmd WinEnter * call <SID>WinEnterHandler()
   autocmd WinLeave * call <SID>WinLeaveHandler()
   let g:nerdtree_tabs_autocmds_loaded = 1
 end
+
+call s:LoadPlugin()
 
