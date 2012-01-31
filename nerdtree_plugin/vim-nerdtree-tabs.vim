@@ -218,15 +218,26 @@ endfun
 
 " === event handlers ===
 
-fun! s:VimEnterHandler()
+fun! s:LoadPlugin()
+  if exists('g:nerdtree_tabs_loaded')
+    return
+  endif
+
+  autocmd TabEnter * call <SID>TabEnterHandler()
+  autocmd TabLeave * call <SID>TabLeaveHandler()
+  autocmd WinEnter * call <SID>WinEnterHandler()
+  autocmd WinLeave * call <SID>WinLeaveHandler()
+
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
                                   \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+  " this makes sure that globally_active is true when using 'gvim .'
+  let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
 
   if l:open_nerd_tree_on_startup
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
-    if !s:IsNERDTreePresentInCurrentTab()
+    if !s:IsNERDTreeOpenInCurrentTab()
       call s:NERDTreeMirrorOrCreateAllTabs()
     end
 
@@ -234,6 +245,7 @@ fun! s:VimEnterHandler()
       exe bufwinnr(l:main_bufnr) . "wincmd w"
     endif
   endif
+  let g:nerdtree_tabs_loaded = 1
 endfun
 
 fun! s:TabEnterHandler()
@@ -284,12 +296,5 @@ fun! s:WinLeaveHandler()
   endif
 endfun
 
-if !exists('g:nerdtree_tabs_autocmds_loaded')
-  autocmd VimEnter * call <SID>VimEnterHandler()
-  autocmd TabEnter * call <SID>TabEnterHandler()
-  autocmd TabLeave * call <SID>TabLeaveHandler()
-  autocmd WinEnter * call <SID>WinEnterHandler()
-  autocmd WinLeave * call <SID>WinLeaveHandler()
-  let g:nerdtree_tabs_autocmds_loaded = 1
-end
+call s:LoadPlugin()
 
