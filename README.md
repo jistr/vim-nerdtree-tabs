@@ -84,7 +84,6 @@ values:
   NERDTree.)
 
 
-git@github.com:matthias-guenther/vim-nerdtree-tabs.git
 ## Credits
 
 * The tab autoclose feature is stolen from Carl Lerche & Yehuda Katz's
