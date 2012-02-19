@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.2.1
+
+* Smart startup focus fixed.
+
 ## v1.2.0
 
 * Loading process refactoring (should fix some glitches and hopefully not
