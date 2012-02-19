@@ -5,7 +5,7 @@ if !exists('g:nerdtree_tabs_open_on_gui_startup')
   let g:nerdtree_tabs_open_on_gui_startup = 1
 endif
 
-" open NERDTree on console vim startup
+" open NERDTree on console vim startup (off by default)
 if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
@@ -39,7 +39,7 @@ if !exists('g:nerdtree_tabs_synchronize_view')
 endif
 
 " when switching into a tab, make sure that focus will always be in file
-" editing window, not in NERDTree window
+" editing window, not in NERDTree window (off by default)
 if !exists('g:nerdtree_tabs_focus_on_files')
   let g:nerdtree_tabs_focus_on_files = 0
 endif
@@ -151,9 +151,14 @@ fun! s:NERDTreeUnfocus()
   " save current window so that it's focus can be restored after switching
   " back to this tab
   let t:NERDTreeTabLastWindow = winnr()
-  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+  if s:IsCurrentWindowNERDTree()
     wincmd w
   endif
+endfun
+
+" returns 1 if current window is NERDTree, false otherwise
+fun! s:IsCurrentWindowNERDTree()
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
 endfun
 
 " restore focus to the window that was focused before leaving current tab
@@ -213,7 +218,7 @@ fun! s:RestoreNERDTreeViewIfPossible()
 endfun
 
 fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
-  return strlen(bufname('$')) == 0 || !&modifiable
+  return strlen(bufname('$')) == 0 || !getbufvar('$', '&modifiable')
 endfun
 
 " === event handlers ===
@@ -223,28 +228,12 @@ fun! s:LoadPlugin()
     return
   endif
 
+  autocmd VimEnter * call <SID>VimEnterHandler()
   autocmd TabEnter * call <SID>TabEnterHandler()
   autocmd TabLeave * call <SID>TabLeaveHandler()
   autocmd WinEnter * call <SID>WinEnterHandler()
   autocmd WinLeave * call <SID>WinLeaveHandler()
 
-  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
-                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
-  " this makes sure that globally_active is true when using 'gvim .'
-  let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
-
-  if l:open_nerd_tree_on_startup
-    let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
-    let l:main_bufnr = bufnr('%')
-
-    if !s:IsNERDTreeOpenInCurrentTab()
-      call s:NERDTreeMirrorOrCreateAllTabs()
-    end
-
-    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
-      exe bufwinnr(l:main_bufnr) . "wincmd w"
-    endif
-  endif
   let g:nerdtree_tabs_loaded = 1
 endfun
 
@@ -293,6 +282,26 @@ fun! s:WinLeaveHandler()
 
   if g:nerdtree_tabs_synchronize_view
     call s:SaveNERDTreeViewIfPossible()
+  endif
+endfun
+
+fun! s:VimEnterHandler()
+  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
+                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+  " this makes sure that globally_active is true when using 'gvim .'
+  let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
+
+  if l:open_nerd_tree_on_startup
+    let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
+    let l:main_bufnr = bufnr('%')
+
+    if !s:IsNERDTreeOpenInCurrentTab()
+      call s:NERDTreeMirrorOrCreateAllTabs()
+    end
+
+    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
+      exe bufwinnr(l:main_bufnr) . "wincmd w"
+    endif
   endif
 endfun
 
