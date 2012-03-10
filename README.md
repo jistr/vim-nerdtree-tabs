@@ -18,7 +18,7 @@
 
 1. mkdir -p ~/.vim/janus/vim/tools/nerdtreetabs/plugin
 
-2. curl https://raw.github.com/jistr/vim-nerdtree-tabs/master/nerdtree_plugin/vim-nerdtree-tabs.vim\
+2. curl https://raw.github.com/jistr/vim-nerdtree-tabs/master/nerdtree_plugin/vim-nerdtree-tabs.vim
    > ~/.vim/janus/vim/tools/nerdtreetabs/plugin/vim-nerdtree-tabs.vim
 
 3. Celebrate.
