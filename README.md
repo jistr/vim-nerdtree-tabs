@@ -3,12 +3,23 @@
 
 ## Installation
 
-1. Copy the plugin into your vim config dir (via pathogen for example).
+1. If you haven't already, install NERDTree (see https://github.com/scrooloose/nerdtree)
 
-2. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
+2. Copy the plugin into your vim config dir (via pathogen for example).
+
+3. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
    Alternatively, you can use plug-mapping instead of a command, like this:
 
         map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+4. Celebrate.
+
+## Installation for Janus Vim Distribution
+
+1. mkdir -p ~/.vim/janus/vim/tools/nerdtreetabs/plugin
+
+2. curl https://raw.github.com/jistr/vim-nerdtree-tabs/master/nerdtree_plugin/vim-nerdtree-tabs.vim\
+   > ~/.vim/janus/vim/tools/nerdtreetabs/plugin/vim-nerdtree-tabs.vim
 
 3. Celebrate.
 
