@@ -14,7 +14,7 @@
 
 4. Celebrate.
 
-## Installation for Janus Vim Distribution
+### Installation for Janus Vim Distribution
 
 1. mkdir -p ~/.vim/janus/vim/tools/nerdtreetabs/plugin
 
