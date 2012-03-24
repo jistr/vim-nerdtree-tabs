@@ -5,10 +5,14 @@
 
 1. If you haven't already, install NERDTree (see https://github.com/scrooloose/nerdtree)
 
-2. Install the plugin through Pathogen:
+2.  Install the plugin through Pathogen:
 
         cd ~/.vim/bundle
-        git clone https://github.com/jistr/vim-nerdtree-tabs.git 
+        git clone https://github.com/jistr/vim-nerdtree-tabs.git
+        
+    Or through Vundle:
+
+        Bundle 'jistr/vim-nerdtree-tabs'
 
 3. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
    Alternatively, you can use plug-mapping instead of a command, like this:
