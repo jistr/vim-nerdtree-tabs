@@ -295,9 +295,7 @@ fun! s:VimEnterHandler()
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
-    if !s:IsNERDTreeOpenInCurrentTab()
-      call s:NERDTreeMirrorOrCreateAllTabs()
-    end
+    call s:NERDTreeMirrorOrCreateAllTabs()
 
     if l:focus_file && g:nerdtree_tabs_smart_startup_focus
       exe bufwinnr(l:main_bufnr) . "wincmd w"
