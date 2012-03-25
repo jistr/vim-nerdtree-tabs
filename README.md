@@ -5,14 +5,19 @@
 
 1. If you haven't already, install NERDTree (see https://github.com/scrooloose/nerdtree)
 
-2.  Install the plugin through Pathogen:
+2.  Install the plugin **through Pathogen**:
 
         cd ~/.vim/bundle
         git clone https://github.com/jistr/vim-nerdtree-tabs.git
         
-    Or through Vundle:
+    Or **through Vundle**:
 
         Bundle 'jistr/vim-nerdtree-tabs'
+        
+    Or **through Janus**:
+
+        cd ~/.janus
+        git clone https://github.com/jistr/vim-nerdtree-tabs.git
 
 3. Map :NERDTreeTabsToggle command to some combo so you don't have to type it.
    Alternatively, you can use plug-mapping instead of a command, like this:
@@ -20,14 +25,6 @@
         map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 4. Celebrate.
-
-### Installation for Janus Vim Distribution
-
-1. mkdir -p ~/.janus/nerdtreetabs/plugin
-
-2. curl https://raw.github.com/jistr/vim-nerdtree-tabs/master/nerdtree_plugin/vim-nerdtree-tabs.vim > ~/.janus/nerdtreetabs/plugin/vim-nerdtree-tabs.vim
-
-3. Celebrate.
 
 ## Features
 
