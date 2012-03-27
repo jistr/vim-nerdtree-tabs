@@ -94,15 +94,14 @@ values:
   NERDTree's feature "open in new tab silently", as you will lose focus on the
   NERDTree.)
 
-###Example
-To run NERDTreeTabs on console vim startup:
+### Example
 
-Put into your .vimrc:
+To run NERDTreeTabs on console vim startup, put into your .vimrc:
 
-`let g:nerdtree_tabs_open_on_console_startup=1`
+    let g:nerdtree_tabs_open_on_console_startup=1
 
 ## Credits
 
-* The tab autoclose feature is stolen from Carl Lerche & Yehuda Katz's
-  [Janus](https://github.com/carlhuda/janus). Thanks, guys!
+The tab autoclose feature is stolen from Carl Lerche & Yehuda Katz's
+[Janus](https://github.com/carlhuda/janus). Thanks, guys!
 
