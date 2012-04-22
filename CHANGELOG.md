@@ -1,5 +1,10 @@
 # vim-nerdtree-tabs changelog
 
+## v1.3.0
+
+* Focus synchronization - ability to have focus on NERDTree after tab switch
+  if and only if it was focused before tab switch. Switched on by default.
+
 ## v1.2.1
 
 * Smart startup focus fixed.
