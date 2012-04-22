@@ -88,6 +88,10 @@ values:
 * `g:nerdtree_tabs_synchronize_view` (default: `1`)  
   Synchronize view of all NERDTree windows (scroll and cursor position)
 
+* `g:nerdtree_tabs_synchronize_focus` (default: `1`)  
+  Synchronize focus when switching windows (focus NERDTree after tab switch
+  if and only if it was focused before tab switch)
+
 * `g:nerdtree_tabs_focus_on_files` (default: `0`)  
   When switching into a tab, make sure that focus is on the file window,
   not in the NERDTree window. (Note that this can get annoying if you use

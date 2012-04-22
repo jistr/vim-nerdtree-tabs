@@ -38,6 +38,12 @@ if !exists('g:nerdtree_tabs_synchronize_view')
   let g:nerdtree_tabs_synchronize_view = 1
 endif
 
+" synchronize focus when switching tabs (focus NERDTree after tab switch
+" if and only if it was focused before tab switch)
+if !exists('g:nerdtree_tabs_synchronize_focus')
+  let g:nerdtree_tabs_synchronize_focus = 1
+endif
+
 " when switching into a tab, make sure that focus will always be in file
 " editing window, not in NERDTree window (off by default)
 if !exists('g:nerdtree_tabs_focus_on_files')
@@ -53,7 +59,7 @@ command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 
 
-" === rest of the code ===
+" === initialization ===
 
 let s:disable_handlers_for_tabdo = 0
 
@@ -63,13 +69,15 @@ if !exists('s:nerdtree_globally_active')
   let s:nerdtree_globally_active = 0
 endif
 
+" === NERDTree manipulation (opening, closing etc.) ===
+
 " automatic NERDTree mirroring on tab switch
 fun! s:NERDTreeMirrorIfGloballyActive()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
-  let l:previous_winnr = winnr("$")
   if s:nerdtree_globally_active && !l:nerdtree_open
+    let l:previous_winnr = winnr("$")
     silent NERDTreeMirror
 
     " if the window count of current tab changed, it means that NERDTreeMirror
@@ -77,6 +85,10 @@ fun! s:NERDTreeMirrorIfGloballyActive()
     if l:previous_winnr != winnr("$")
       wincmd w
     endif
+
+    " restoring focus to NERDTree with RestoreFocus makes windows behave
+    " wrong, so make sure it does not focus NERDTree
+    let s:is_nerdtree_globally_focused = 0
   endif
 endfun
 
@@ -146,6 +158,23 @@ fun! s:NERDTreeMirrorToggle()
   endif
 endfun
 
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+fun! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
+    q
+  endif
+endfun
+
+" === focus functions ===
+
+" if the current window is NERDTree, move focus to the next window
+fun! s:NERDTreeFocus()
+  if !s:IsCurrentWindowNERDTree() && exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+    exe bufwinnr(t:NERDTreeBufName) . "wincmd w"
+  endif
+endfun
+
 " if the current window is NERDTree, move focus to the next window
 fun! s:NERDTreeUnfocus()
   " save current window so that it's focus can be restored after switching
@@ -156,25 +185,28 @@ fun! s:NERDTreeUnfocus()
   endif
 endfun
 
-" returns 1 if current window is NERDTree, false otherwise
-fun! s:IsCurrentWindowNERDTree()
-  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+fun! s:SaveGlobalFocus()
+  let s:is_nerdtree_globally_focused = s:IsCurrentWindowNERDTree()
 endfun
 
 " restore focus to the window that was focused before leaving current tab
 fun! s:RestoreFocus()
-  if exists("t:NERDTreeTabLastWindow")
+  if g:nerdtree_tabs_synchronize_focus
+    if s:is_nerdtree_globally_focused
+      call s:NERDTreeFocus()
+    elseif exists("t:NERDTreeTabLastWindow") && exists("t:NERDTreeBufName") && t:NERDTreeTabLastWindow != bufwinnr(t:NERDTreeBufName)
+      exe t:NERDTreeTabLastWindow . "wincmd w"
+    endif
+  elseif exists("t:NERDTreeTabLastWindow")
     exe t:NERDTreeTabLastWindow . "wincmd w"
   endif
 endfun
 
-" Close all open buffers on entering a window if the only
-" buffer that's left is the NERDTree buffer
-fun! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
-    q
-  endif
+fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
+  return strlen(bufname('$')) == 0 || !getbufvar('$', '&modifiable')
 endfun
+
+" === utility functions ===
 
 " check if NERDTree is open in current tab
 fun! s:IsNERDTreeOpenInCurrentTab()
@@ -185,6 +217,13 @@ endfun
 fun! s:IsNERDTreePresentInCurrentTab()
   return exists("t:NERDTreeBufName")
 endfun
+
+" returns 1 if current window is NERDTree, false otherwise
+fun! s:IsCurrentWindowNERDTree()
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+endfun
+
+" === NERDTree view manipulation (scroll and cursor positions) ===
 
 fun! s:SaveNERDTreeViewIfPossible()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
@@ -217,10 +256,6 @@ fun! s:RestoreNERDTreeViewIfPossible()
   endif
 endfun
 
-fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
-  return strlen(bufname('$')) == 0 || !getbufvar('$', '&modifiable')
-endfun
-
 " === event handlers ===
 
 fun! s:LoadPlugin()
@@ -249,18 +284,16 @@ fun! s:TabEnterHandler()
     call s:RestoreNERDTreeViewIfPossible()
   endif
 
-  if g:nerdtree_tabs_meaningful_tab_names && !g:nerdtree_tabs_focus_on_files
-    call s:RestoreFocus()
-  endif
-
-  " this one is necessary in case meaningful_tab_names is off
   if g:nerdtree_tabs_focus_on_files
     call s:NERDTreeUnfocus()
+  else
+    call s:RestoreFocus()
   endif
 endfun
 
 fun! s:TabLeaveHandler()
   if g:nerdtree_tabs_meaningful_tab_names
+    call s:SaveGlobalFocus()
     call s:NERDTreeUnfocus()
   endif
 endfun
