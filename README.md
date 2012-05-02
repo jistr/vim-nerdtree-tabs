@@ -1,5 +1,22 @@
 # NERDTree and tabs together in Vim, painlessly
 
+## Features
+
+This plugin aims at making NERDTree feel like a true panel, independent of tabs.
+
+* **Just one NERDTree**, always and ever. It will always look the same in
+  all tabs, including expanded/collapsed nodes, scroll position etc.
+
+* Open in all tabs / close in all tabs. Do this via `:NERDTreeTabsToggle`
+
+* Meaningful tab captions for inactive tabs. No more captions like 'NERD_tree_1'.
+
+* When you close a file, the tab closes with it. No NERDTree hanging open.
+
+* Autoopen NERDTree on GVim / MacVim startup.
+
+Many of these features can be switched off. See section Configuration.
+
 ## Installation
 
 1. If you haven't already, install NERDTree (see https://github.com/scrooloose/nerdtree)
@@ -24,23 +41,6 @@
         map <Leader>n <plug>NERDTreeTabsToggle<CR>
 
 4. Celebrate.
-
-## Features
-
-This plugin aims at making NERDTree feel like a true panel, independent of tabs.
-
-* **Just one NERDTree**, always and ever. It will always look the same in
-  all tabs, including expanded/collapsed nodes, scroll position etc.
-
-* Open in all tabs / close in all tabs. Do this via `:NERDTreeTabsToggle`
-
-* Meaningful tab captions for inactive tabs. No more captions like 'NERD_tree_1'.
-
-* When you close a file, the tab closes with it. No NERDTree hanging open.
-
-* Autoopen NERDTree on GVim / MacVim startup.
-
-Many of these features can be switched off. See section Configuration.
 
 ## Commands and Mappings
 
