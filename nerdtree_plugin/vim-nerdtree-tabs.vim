@@ -53,10 +53,14 @@ endif
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
+noremap <silent> <script> <Plug>NERDTreeSteppedOpen :call <SID>NERDTreeSteppedOpen()
+noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
 
 " === plugin commands ===
 command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
+command! NERDTreeSteppedOpen call <SID>NERDTreeSteppedOpen()
+command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
 
 
 " === initialization ===
@@ -221,6 +225,33 @@ endfun
 " returns 1 if current window is NERDTree, false otherwise
 fun! s:IsCurrentWindowNERDTree()
   return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+endfun
+
+" === Stepped Open/Close functions ===
+
+" focus the NERDTree view, creating one first if none is present
+fun! s:NERDTreeSteppedOpen()
+  if !s:IsCurrentWindowNERDTree()
+    if s:IsNERDTreeOpenInCurrentTab()
+      call s:NERDTreeFocus()
+    else
+      call s:NERDTreeMirrorOrCreate()
+    endif
+  endif
+endfun
+
+" unfocus the NERDTree view or closes it if it hadn't had focus at the time of
+" the call
+fun! s:NERDTreeSteppedClose()
+  if s:IsCurrentWindowNERDTree()
+    call s:NERDTreeUnfocus()
+  else
+    let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
+
+    if l:nerdtree_open
+      silent NERDTreeClose
+    endif
+  endif
 endfun
 
 " === NERDTree view manipulation (scroll and cursor positions) ===
