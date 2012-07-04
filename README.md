@@ -44,7 +44,7 @@ Many of these features can be switched off. See section Configuration.
 
 ## Commands and Mappings
 
-Vim-nerdtree-tabs defines two commands:
+Vim-nerdtree-tabs defines four commands:
 
 * `:NERDTreeTabsToggle` switches NERDTree on/off for all tabs.
 
@@ -53,10 +53,17 @@ Vim-nerdtree-tabs defines two commands:
   perform a mirror of another tab's tree). If all this fails, a new tree is
   created. It is recommended that you use this command instead of `:NERDTreeToggle`.
 
+* `:NERDTreeSteppedOpen` focuses the NERDTree, opening one first if none is present.
+
+* `:NERDTreeSteppedClose` unfocuses the NERDTree, or closes/hides it if it was
+  not focused.
+
 There are also plug-mappings available with the same functionality:
 
 * `<plug>NERDTreeTabsToggle`
 * `<plug>NERDTreeMirrorToggle`
+* `<plug>NERDTreeSteppedOpen`
+* `<plug>NERDTreeSteppedClose`
 
 ## Configuration
 
