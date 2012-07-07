@@ -63,22 +63,6 @@ command! NERDTreeSteppedOpen call <SID>NERDTreeSteppedOpen()
 command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
 
 
-" === initialization ===
-
-let s:disable_handlers_for_tabdo = 0
-
-" global on/off NERDTree state
-" the exists check is to enable script reloading without resetting the state
-if !exists('s:nerdtree_globally_active')
-  let s:nerdtree_globally_active = 0
-endif
-
-" global focused/unfocused NERDTree state
-" the exists check is to enable script reloading without resetting the state
-if !exists('s:is_nerdtree_globally_focused')
-  call s:SaveGlobalFocus()
-end
-
 " === NERDTree manipulation (opening, closing etc.) ===
 
 " automatic NERDTree mirroring on tab switch
@@ -299,6 +283,20 @@ fun! s:LoadPlugin()
   if exists('g:nerdtree_tabs_loaded')
     return
   endif
+
+  let s:disable_handlers_for_tabdo = 0
+
+  " global on/off NERDTree state
+  " the exists check is to enable script reloading without resetting the state
+  if !exists('s:nerdtree_globally_active')
+    let s:nerdtree_globally_active = 0
+  endif
+
+  " global focused/unfocused NERDTree state
+  " the exists check is to enable script reloading without resetting the state
+  if !exists('s:is_nerdtree_globally_focused')
+    call s:SaveGlobalFocus()
+  end
 
   autocmd VimEnter * call <SID>VimEnterHandler()
   autocmd TabEnter * call <SID>TabEnterHandler()
