@@ -73,6 +73,12 @@ if !exists('s:nerdtree_globally_active')
   let s:nerdtree_globally_active = 0
 endif
 
+" global focused/unfocused NERDTree state
+" the exists check is to enable script reloading without resetting the state
+if !exists('s:is_nerdtree_globally_focused')
+  call s:SaveGlobalFocus()
+end
+
 " === NERDTree manipulation (opening, closing etc.) ===
 
 " automatic NERDTree mirroring on tab switch
@@ -196,7 +202,7 @@ endfun
 " restore focus to the window that was focused before leaving current tab
 fun! s:RestoreFocus()
   if g:nerdtree_tabs_synchronize_focus
-    if exists("s:is_nerdtree_globally_focused") && s:is_nerdtree_globally_focused
+    if s:is_nerdtree_globally_focused
       call s:NERDTreeFocus()
     elseif exists("t:NERDTreeTabLastWindow") && exists("t:NERDTreeBufName") && t:NERDTreeTabLastWindow != bufwinnr(t:NERDTreeBufName)
       exe t:NERDTreeTabLastWindow . "wincmd w"
