@@ -52,12 +52,18 @@ endif
 
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsOpen :call <SID>NERDTreeMirrorOrCreateAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsClose :call <SID>NERDTreeCloseAllTabs()
+noremap <silent> <script> <Plug>NERDTreeMirrorOpen :call <SID>NERDTreeMirrorOrCreate()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 noremap <silent> <script> <Plug>NERDTreeSteppedOpen :call <SID>NERDTreeSteppedOpen()
 noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
 
 " === plugin commands ===
 command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
+command! NERDTreeTabsOpen call <SID>NERDTreeMirrorOrCreateAllTabs()
+command! NERDTreeTabsClose call <SID>NERDTreeCloseAllTabs()
+command! NERDTreeMirrorOpen call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 command! NERDTreeSteppedOpen call <SID>NERDTreeSteppedOpen()
 command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
