@@ -284,6 +284,8 @@ fun! s:LoadPlugin()
     return
   endif
 
+  let g:NERDTreeHijackNetrw = 0
+
   let s:disable_handlers_for_tabdo = 0
 
   " global on/off NERDTree state
@@ -363,7 +365,9 @@ fun! s:VimEnterHandler()
     let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
     let l:main_bufnr = bufnr('%')
 
-    call s:NERDTreeMirrorOrCreateAllTabs()
+    if !s:IsNERDTreePresentInCurrentTab()
+      call s:NERDTreeMirrorOrCreateAllTabs()
+    endif
 
     if l:focus_file && g:nerdtree_tabs_smart_startup_focus
       exe bufwinnr(l:main_bufnr) . "wincmd w"
