@@ -2,8 +2,10 @@
 
 ## Next version
 
-* When Vim is given a directory as a parameter, `:cd` into it. (This can be
-  disabled in configuration.)
+* When synchronizing NERDTree scroll and cursor position, synchronize also
+  NERDTree window width. (Thanks EinfachToll.)
+
+* When Vim is given a directory as a parameter, `:cd` into it. (Thanks DAddYE.)
 
 * New commands `NERDTreeTabsOpen`, `NERDTreeTabsClose` and
   `NERDTreeMirrorOpen`. They are not a new functionality, just externalize

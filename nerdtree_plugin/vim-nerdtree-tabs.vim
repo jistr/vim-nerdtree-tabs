@@ -262,6 +262,9 @@ fun! s:SaveNERDTreeViewIfPossible()
     " save scroll and cursor etc.
     let s:nerdtree_view = winsaveview()
 
+    " save NERDTree window width
+    let s:nerdtree_width = winwidth(winnr())
+
     " save buffer name (to be able to correct desync by commands spawning
     " a new NERDTree instance)
     let s:nerdtree_buffer = bufname("%")
@@ -271,7 +274,8 @@ endfun
 fun! s:RestoreNERDTreeViewIfPossible()
   " if nerdtree exists in current tab, it is the current window and if saved
   " state is available, restore it
-  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && exists('s:nerdtree_view')
+  let l:view_state_saved = exists('s:nerdtree_view') && exists('s:nerdtree_width')
+  if s:IsNERDTreeOpenInCurrentTab() && l:view_state_saved
     let l:current_winnr = winnr()
     let l:nerdtree_winnr = bufwinnr(t:NERDTreeBufName)
 
@@ -282,8 +286,11 @@ fun! s:RestoreNERDTreeViewIfPossible()
       silent NERDTreeClose
       silent NERDTreeMirror
     endif
-    " restore cursor and scroll
+    " restore cursor, scroll and window width
     call winrestview(s:nerdtree_view)
+    exe "vertical resize " . s:nerdtree_width
+
+    " switch back to whatever window was focused before
     exe l:current_winnr . "wincmd w"
   endif
 endfun
