@@ -2,6 +2,9 @@
 
 ## Next version
 
+* When Vim is given a directory as a parameter, `:cd` into it. (This can be
+  disabled in configuration.)
+
 * New commands `NERDTreeTabsOpen`, `NERDTreeTabsClose` and
   `NERDTreeMirrorOpen`. They are not a new functionality, just externalize
   stuff that was previously accessible only inside the plugin.

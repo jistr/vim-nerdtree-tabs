@@ -104,6 +104,10 @@ values:
   NERDTree's feature "open in new tab silently", as you will lose focus on the
   NERDTree.)
 
+* `g:nerdtree_tabs_startup_cd` (default: `1`)  
+  When given a directory name as a command line parameter when launching Vim,
+  `:cd` into it.
+
 ### Example
 
 To run NERDTreeTabs on console vim startup, put into your .vimrc:

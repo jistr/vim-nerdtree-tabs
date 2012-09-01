@@ -50,6 +50,11 @@ if !exists('g:nerdtree_tabs_focus_on_files')
   let g:nerdtree_tabs_focus_on_files = 0
 endif
 
+" when starting up with a directory name as a parameter, cd into it
+if !exists('g:nerdtree_tabs_startup_cd')
+  let g:nerdtree_tabs_startup_cd = 1
+endif
+
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsOpen :call <SID>NERDTreeMirrorOrCreateAllTabs()
@@ -362,6 +367,11 @@ fun! s:WinLeaveHandler()
 endfun
 
 fun! s:VimEnterHandler()
+  " if the argument to vim is a directory, cd into it
+  if g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
+    exe "cd " . argv(0)
+  endif
+
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
                                   \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
   " this makes sure that globally_active is true when using 'gvim .'
