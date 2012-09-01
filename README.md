@@ -46,12 +46,20 @@ Many of these features can be switched off. See section Configuration.
 
 Vim-nerdtree-tabs defines four commands:
 
-* `:NERDTreeTabsToggle` switches NERDTree on/off for all tabs.
+* `:NERDTreeTabsOpen` switches NERDTree on for all tabs.
 
-* `:NERDTreeMirrorToggle` acts as `:NERDTreeToggle`, but smarter: When opening,
+* `:NERDTreeTabsClose` switches NERDTree off for all tabs.
+
+* `:NERDTreeTabsToggle` toggles NERDTree on/off for all tabs.
+
+* `:NERDTreeMirrorOpen` acts as `:NERDTreeMirror`, but smarter: When opening,
   it first tries to use an existing tree (i.e. previously closed in this tab or
   perform a mirror of another tab's tree). If all this fails, a new tree is
-  created. It is recommended that you use this command instead of `:NERDTreeToggle`.
+  created. It is recommended that you use this command instead of
+  `:NERDTreeMirror`.
+
+* `:NERDTreeMirrorToggle` toggles NERDTree on/off in current tab, using
+  the same behavior as `:NERDTreeMirrorOpen`.
 
 * `:NERDTreeSteppedOpen` focuses the NERDTree, opening one first if none is present.
 
@@ -60,7 +68,10 @@ Vim-nerdtree-tabs defines four commands:
 
 There are also plug-mappings available with the same functionality:
 
+* `<plug>NERDTreeTabsOpen`
+* `<plug>NERDTreeTabsClose`
 * `<plug>NERDTreeTabsToggle`
+* `<plug>NERDTreeMirrorOpen`
 * `<plug>NERDTreeMirrorToggle`
 * `<plug>NERDTreeSteppedOpen`
 * `<plug>NERDTreeSteppedClose`

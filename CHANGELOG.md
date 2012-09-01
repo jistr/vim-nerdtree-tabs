@@ -1,6 +1,6 @@
 # vim-nerdtree-tabs changelog
 
-## Next version
+## v1.4.0
 
 * When synchronizing NERDTree scroll and cursor position, synchronize also
   NERDTree window width. (Thanks EinfachToll.)
