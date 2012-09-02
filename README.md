@@ -44,7 +44,7 @@ Many of these features can be switched off. See section Configuration.
 
 ## Commands and Mappings
 
-Vim-nerdtree-tabs defines four commands:
+Vim-nerdtree-tabs provides these commands:
 
 * `:NERDTreeTabsOpen` switches NERDTree on for all tabs.
 
