@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.1
+
+* Fix "cd into" feature for paths that include spaces. (Thanks nybblr.)
+
 ## v1.4.0
 
 * When synchronizing NERDTree scroll and cursor position, synchronize also
