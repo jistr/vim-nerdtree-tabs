@@ -10,6 +10,11 @@ if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
 
+" do not open NERDTree if vim starts in diff mode
+if !exists('g:nerdtree_tabs_no_startup_for_diff')
+    let g:nerdtree_tabs_no_startup_for_diff = 1
+endif
+
 " On startup - focus NERDTree when opening a directory, focus the file if
 " editing a specified file
 if !exists('g:nerdtree_tabs_smart_startup_focus')
@@ -415,6 +420,11 @@ fun! s:VimEnterHandler()
 
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
                                   \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+
+  if g:nerdtree_tabs_no_startup_for_diff && &diff
+      let l:open_nerd_tree_on_startup = 0
+  endif
+
   " this makes sure that globally_active is true when using 'gvim .'
   let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
 
