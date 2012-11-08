@@ -186,7 +186,8 @@ fun! s:NERDTreeUnfocus()
   " back to this tab
   let t:NERDTreeTabLastWindow = winnr()
   if s:IsCurrentWindowNERDTree()
-    wincmd w
+    let l:winNum = s:NextNormalWindow()
+    exec l:winNum.'wincmd w'
   endif
 endfun
 
@@ -212,6 +213,35 @@ fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
 endfun
 
 " === utility functions ===
+
+" find next window with a normal buffer
+fun! s:NextNormalWindow()
+  let l:i = 1
+  while(l:i <= winnr('$'))
+    let l:buf = winbufnr(l:i)
+
+    " skip unlisted buffers
+    if buflisted(l:buf) == 0
+      let l:i = l:i + 1
+      continue
+    endif
+
+    " skip un-modifiable buffers
+    if getbufvar(l:buf, '&modifiable') != 1
+      let l:i = l:i + 1
+      continue
+    endif
+
+    " skip temporary buffers with buftype set
+    if empty(getbufvar(l:buf, "&buftype")) != 1
+      let l:i = l:i + 1
+      continue
+    endif
+
+    return l:i
+  endwhile
+  return -1
+endfun
 
 " check if NERDTree is open in current tab
 fun! s:IsNERDTreeOpenInCurrentTab()
