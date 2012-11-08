@@ -121,6 +121,13 @@ fun! s:NERDTreeMirrorOrCreate()
     if l:previous_winnr == winnr("$")
       silent NERDTreeToggle
     endif
+
+    " if the window count of current tab changed, it means that we have
+    " successfully getting a NERDTree window, we should move focus to the
+    " previous window
+    if l:previous_winnr != winnr("$")
+      wincmd p
+    endif
   endif
 endfun
 
