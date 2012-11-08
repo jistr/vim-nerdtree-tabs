@@ -86,9 +86,9 @@ fun! s:NERDTreeMirrorIfGloballyActive()
     silent NERDTreeMirror
 
     " if the window count of current tab changed, it means that NERDTreeMirror
-    " was successful and we should move focus to the next window
+    " was successful and we should move focus to the previous window
     if l:previous_winnr != winnr("$")
-      wincmd w
+      wincmd p
     endif
 
     " restoring focus to NERDTree with RestoreFocus makes windows behave
