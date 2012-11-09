@@ -187,7 +187,11 @@ fun! s:NERDTreeUnfocus()
   let t:NERDTreeTabLastWindow = winnr()
   if s:IsCurrentWindowNERDTree()
     let l:winNum = s:NextNormalWindow()
-    exec l:winNum.'wincmd w'
+    if l:winNum != -1
+      exec l:winNum.'wincmd w'
+    else
+      wincmd w
+    endif
   endif
 endfun
 
