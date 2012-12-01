@@ -88,6 +88,9 @@ values:
 * `g:nerdtree_tabs_open_on_console_startup` (default: `0`)  
   Open NERDTree on console vim startup
 
+* `let g:nerdtree_tabs_no_startup_for_diff` (default: `1`)  
+  Do not open NERDTree if vim starts in diff mode
+
 * `g:nerdtree_tabs_smart_startup_focus` (default: `1`)  
   On startup, focus NERDTree if opening a directory, focus file if opening
   a file.
