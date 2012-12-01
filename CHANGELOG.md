@@ -1,5 +1,12 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.2
+
+* Friendlier when using together with MiniBufExplorer. (Thanks techlivezheng.)
+
+* Do not open NERDTree by default when starting Vim in diff mode. (Thanks
+  techlivezheng.)
+
 ## v1.4.1
 
 * Fix "cd into" feature for paths that include spaces. (Thanks nybblr.)
