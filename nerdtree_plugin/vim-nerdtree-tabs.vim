@@ -61,23 +61,22 @@ if !exists('g:nerdtree_tabs_startup_cd')
 endif
 
 " === plugin mappings ===
-noremap <silent> <script> <Plug>NERDTreeTabsToggle :call <SID>NERDTreeToggleAllTabs()
-noremap <silent> <script> <Plug>NERDTreeTabsOpen :call <SID>NERDTreeMirrorOrCreateAllTabs()
-noremap <silent> <script> <Plug>NERDTreeTabsClose :call <SID>NERDTreeCloseAllTabs()
-noremap <silent> <script> <Plug>NERDTreeMirrorOpen :call <SID>NERDTreeMirrorOrCreate()
+noremap <silent> <script> <Plug>NERDTreeTabsToggle   :call <SID>NERDTreeToggleAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsOpen     :call <SID>NERDTreeMirrorOrCreateAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsClose    :call <SID>NERDTreeCloseAllTabs()
+noremap <silent> <script> <Plug>NERDTreeMirrorOpen   :call <SID>NERDTreeMirrorOrCreate()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
-noremap <silent> <script> <Plug>NERDTreeSteppedOpen :call <SID>NERDTreeSteppedOpen()
+noremap <silent> <script> <Plug>NERDTreeSteppedOpen  :call <SID>NERDTreeSteppedOpen()
 noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
 
 " === plugin commands ===
-command! NERDTreeTabsToggle call <SID>NERDTreeToggleAllTabs()
-command! NERDTreeTabsOpen call <SID>NERDTreeMirrorOrCreateAllTabs()
-command! NERDTreeTabsClose call <SID>NERDTreeCloseAllTabs()
-command! NERDTreeMirrorOpen call <SID>NERDTreeMirrorOrCreate()
+command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
+command! NERDTreeTabsOpen     call <SID>NERDTreeMirrorOrCreateAllTabs()
+command! NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
+command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
-command! NERDTreeSteppedOpen call <SID>NERDTreeSteppedOpen()
+command! NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
 command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
-
 
 " === NERDTree manipulation (opening, closing etc.) ===
 
@@ -88,6 +87,7 @@ fun! s:NERDTreeMirrorIfGloballyActive()
   " if NERDTree is not active in the current tab, try to mirror it
   if s:nerdtree_globally_active && !l:nerdtree_open
     let l:previous_winnr = winnr("$")
+
     silent NERDTreeMirror
 
     " if the window count of current tab changed, it means that NERDTreeMirror
@@ -374,6 +374,7 @@ fun! s:TabEnterHandler()
   if g:nerdtree_tabs_open_on_new_tab
     call s:NERDTreeMirrorIfGloballyActive()
   endif
+
   if g:nerdtree_tabs_synchronize_view
     call s:RestoreNERDTreeViewIfPossible()
   endif
@@ -443,4 +444,3 @@ fun! s:VimEnterHandler()
 endfun
 
 call s:LoadPlugin()
-
