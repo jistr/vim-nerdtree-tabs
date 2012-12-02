@@ -168,14 +168,6 @@ fun! s:NERDTreeMirrorToggle()
   endif
 endfun
 
-" Close all open buffers on entering a window if the only
-" buffer that's left is the NERDTree buffer
-fun! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
-    q
-  endif
-endfun
-
 " === focus functions ===
 
 " if the current window is NERDTree, move focus to the next window
@@ -200,10 +192,6 @@ fun! s:NERDTreeUnfocus()
   endif
 endfun
 
-fun! s:SaveGlobalFocus()
-  let s:is_nerdtree_globally_focused = s:IsCurrentWindowNERDTree()
-endfun
-
 " restore focus to the window that was focused before leaving current tab
 fun! s:NERDTreeRestoreFocus()
   if g:nerdtree_tabs_synchronize_focus
@@ -215,6 +203,10 @@ fun! s:NERDTreeRestoreFocus()
   elseif exists("t:NERDTreeTabLastWindow")
     exe t:NERDTreeTabLastWindow . "wincmd w"
   endif
+endfun
+
+fun! s:SaveGlobalFocus()
+  let s:is_nerdtree_globally_focused = s:IsCurrentWindowNERDTree()
 endfun
 
 fun! s:IfFocusOnStartup()
@@ -252,6 +244,19 @@ fun! s:NextNormalWindow()
   return -1
 endfun
 
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+fun! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1 && winnr("$") == 1
+    q
+  endif
+endfun
+
+" returns 1 if current window is NERDTree, false otherwise
+fun! s:IsCurrentWindowNERDTree()
+  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
+endfun
+
 " check if NERDTree is open in current tab
 fun! s:IsNERDTreeOpenInCurrentTab()
   return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
@@ -260,11 +265,6 @@ endfun
 " check if NERDTree is present in current tab (not necessarily visible)
 fun! s:IsNERDTreePresentInCurrentTab()
   return exists("t:NERDTreeBufName")
-endfun
-
-" returns 1 if current window is NERDTree, false otherwise
-fun! s:IsCurrentWindowNERDTree()
-  return exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr()
 endfun
 
 " === Stepped Open/Close functions ===
