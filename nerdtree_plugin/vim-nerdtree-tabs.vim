@@ -81,7 +81,7 @@ command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
 " === NERDTree manipulation (opening, closing etc.) ===
 
 " automatic NERDTree mirroring on tab switch
-fun! s:NERDTreeMirrorIfGloballyActive()
+fun! s:MirrorIfGloballyActive()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
@@ -372,7 +372,7 @@ fun! s:TabEnterHandler()
   endif
 
   if g:nerdtree_tabs_open_on_new_tab
-    call s:NERDTreeMirrorIfGloballyActive()
+    call s:MirrorIfGloballyActive()
   endif
 
   if g:nerdtree_tabs_synchronize_view
