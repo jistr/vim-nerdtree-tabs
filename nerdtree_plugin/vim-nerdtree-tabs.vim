@@ -217,7 +217,7 @@ fun! s:NERDTreeRestoreFocus()
   endif
 endfun
 
-fun! s:ShouldFocusBeOnNERDTreeAfterStartup()
+fun! s:IfFocusOnStartup()
   return strlen(bufname('$')) == 0 || !getbufvar('$', '&modifiable')
 endfun
 
@@ -430,7 +430,7 @@ fun! s:VimEnterHandler()
   let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
 
   if l:open_nerd_tree_on_startup
-    let l:focus_file = !s:ShouldFocusBeOnNERDTreeAfterStartup()
+    let l:focus_file = !s:IfFocusOnStartup()
     let l:main_bufnr = bufnr('%')
 
     if !s:IsNERDTreePresentInCurrentTab()
