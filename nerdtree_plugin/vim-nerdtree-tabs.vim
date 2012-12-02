@@ -120,8 +120,9 @@ fun! s:NERDTreeMirrorOrCreate()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
 
   " if NERDTree is not active in the current tab, try to mirror it
-  let l:previous_winnr = winnr("$")
   if !l:nerdtree_open
+    let l:previous_winnr = winnr("$")
+
     silent NERDTreeMirror
 
     " if the window count of current tab didn't increase after NERDTreeMirror,
