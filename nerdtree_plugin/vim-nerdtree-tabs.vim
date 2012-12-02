@@ -61,18 +61,18 @@ if !exists('g:nerdtree_tabs_startup_cd')
 endif
 
 " === plugin mappings ===
-noremap <silent> <script> <Plug>NERDTreeTabsToggle   :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsOpen     :call <SID>NERDTreeOpenAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsClose    :call <SID>NERDTreeCloseAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsToggle   :call <SID>NERDTreeToggleAllTabs()
 noremap <silent> <script> <Plug>NERDTreeMirrorOpen   :call <SID>NERDTreeMirrorOrCreate()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 noremap <silent> <script> <Plug>NERDTreeSteppedOpen  :call <SID>NERDTreeSteppedOpen()
 noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
 
 " === plugin commands ===
-command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
 command! NERDTreeTabsOpen     call <SID>NERDTreeOpenAllTabs()
 command! NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
+command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
 command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 command! NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
@@ -102,16 +102,6 @@ fun! s:MirrorIfGloballyActive()
   endif
 endfun
 
-" close NERDTree across all tabs
-fun! s:NERDTreeCloseAllTabs()
-  let s:nerdtree_globally_active = 0
-
-  " tabdo doesn't preserve current tab - save it and restore it afterwards
-  let l:current_tab = tabpagenr()
-  tabdo silent NERDTreeClose
-  exe 'tabn ' . l:current_tab
-endfun
-
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
 fun! s:NERDTreeMirrorOrCreate()
   let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
@@ -129,6 +119,17 @@ fun! s:NERDTreeMirrorOrCreate()
   endif
 endfun
 
+" toggle NERDTree in current tab, use mirror if possible
+fun! s:NERDTreeMirrorToggle()
+  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
+
+  if l:nerdtree_open
+    silent NERDTreeClose
+  else
+    call s:NERDTreeMirrorOrCreate()
+  endif
+endfun
+
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
 fun! s:NERDTreeOpenAllTabs()
   let s:nerdtree_globally_active = 1
@@ -136,6 +137,16 @@ fun! s:NERDTreeOpenAllTabs()
   " tabdo doesn't preserve current tab - save it and restore it afterwards
   let l:current_tab = tabpagenr()
   tabdo call s:NERDTreeMirrorOrCreate()
+  exe 'tabn ' . l:current_tab
+endfun
+
+" close NERDTree across all tabs
+fun! s:NERDTreeCloseAllTabs()
+  let s:nerdtree_globally_active = 0
+
+  " tabdo doesn't preserve current tab - save it and restore it afterwards
+  let l:current_tab = tabpagenr()
+  tabdo silent NERDTreeClose
   exe 'tabn ' . l:current_tab
 endfun
 
@@ -155,17 +166,6 @@ fun! s:NERDTreeToggleAllTabs()
   endif
 
   let s:disable_handlers_for_tabdo = 0
-endfun
-
-" toggle NERDTree in current tab, use mirror if possible
-fun! s:NERDTreeMirrorToggle()
-  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
-
-  if l:nerdtree_open
-    silent NERDTreeClose
-  else
-    call s:NERDTreeMirrorOrCreate()
-  endif
 endfun
 
 " === focus functions ===
