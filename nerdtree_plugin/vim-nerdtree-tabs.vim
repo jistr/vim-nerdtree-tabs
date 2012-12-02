@@ -366,6 +366,36 @@ fun! s:LoadPlugin()
   let g:nerdtree_tabs_loaded = 1
 endfun
 
+fun! s:VimEnterHandler()
+  " if the argument to vim is a directory, cd into it
+  if g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
+    exe 'cd "' . argv(0) . '"'
+  endif
+
+  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
+                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+
+  if g:nerdtree_tabs_no_startup_for_diff && &diff
+      let l:open_nerd_tree_on_startup = 0
+  endif
+
+  " this makes sure that globally_active is true when using 'gvim .'
+  let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
+
+  if l:open_nerd_tree_on_startup
+    let l:focus_file = !s:IfFocusOnStartup()
+    let l:main_bufnr = bufnr('%')
+
+    if !s:IsNERDTreePresentInCurrentTab()
+      call s:NERDTreeOpenAllTabs()
+    endif
+
+    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
+      exe bufwinnr(l:main_bufnr) . "wincmd w"
+    endif
+  endif
+endfun
+
 fun! s:TabEnterHandler()
   if s:disable_handlers_for_tabdo
     return
@@ -410,36 +440,6 @@ fun! s:WinLeaveHandler()
 
   if g:nerdtree_tabs_synchronize_view
     call s:SaveNERDTreeViewIfPossible()
-  endif
-endfun
-
-fun! s:VimEnterHandler()
-  " if the argument to vim is a directory, cd into it
-  if g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
-    exe 'cd "' . argv(0) . '"'
-  endif
-
-  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
-                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
-
-  if g:nerdtree_tabs_no_startup_for_diff && &diff
-      let l:open_nerd_tree_on_startup = 0
-  endif
-
-  " this makes sure that globally_active is true when using 'gvim .'
-  let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
-
-  if l:open_nerd_tree_on_startup
-    let l:focus_file = !s:IfFocusOnStartup()
-    let l:main_bufnr = bufnr('%')
-
-    if !s:IsNERDTreePresentInCurrentTab()
-      call s:NERDTreeOpenAllTabs()
-    endif
-
-    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
-      exe bufwinnr(l:main_bufnr) . "wincmd w"
-    endif
   endif
 endfun
 
