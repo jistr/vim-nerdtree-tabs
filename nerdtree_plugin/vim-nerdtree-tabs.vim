@@ -62,7 +62,7 @@ endif
 
 " === plugin mappings ===
 noremap <silent> <script> <Plug>NERDTreeTabsToggle   :call <SID>NERDTreeToggleAllTabs()
-noremap <silent> <script> <Plug>NERDTreeTabsOpen     :call <SID>NERDTreeMirrorOrCreateAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsOpen     :call <SID>NERDTreeOpenAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsClose    :call <SID>NERDTreeCloseAllTabs()
 noremap <silent> <script> <Plug>NERDTreeMirrorOpen   :call <SID>NERDTreeMirrorOrCreate()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
@@ -71,7 +71,7 @@ noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedC
 
 " === plugin commands ===
 command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
-command! NERDTreeTabsOpen     call <SID>NERDTreeMirrorOrCreateAllTabs()
+command! NERDTreeTabsOpen     call <SID>NERDTreeOpenAllTabs()
 command! NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
 command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
@@ -130,7 +130,7 @@ fun! s:NERDTreeMirrorOrCreate()
 endfun
 
 " switch NERDTree on for all tabs while making sure there is only one NERDTree buffer
-fun! s:NERDTreeMirrorOrCreateAllTabs()
+fun! s:NERDTreeOpenAllTabs()
   let s:nerdtree_globally_active = 1
 
   " tabdo doesn't preserve current tab - save it and restore it afterwards
@@ -147,7 +147,7 @@ fun! s:NERDTreeToggleAllTabs()
   if l:nerdtree_open
     call s:NERDTreeCloseAllTabs()
   else
-    call s:NERDTreeMirrorOrCreateAllTabs()
+    call s:NERDTreeOpenAllTabs()
     " force focus to NERDTree in current tab
     if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
       exe bufwinnr(t:NERDTreeBufName) . "wincmd w"
@@ -434,7 +434,7 @@ fun! s:VimEnterHandler()
     let l:main_bufnr = bufnr('%')
 
     if !s:IsNERDTreePresentInCurrentTab()
-      call s:NERDTreeMirrorOrCreateAllTabs()
+      call s:NERDTreeOpenAllTabs()
     endif
 
     if l:focus_file && g:nerdtree_tabs_smart_startup_focus
