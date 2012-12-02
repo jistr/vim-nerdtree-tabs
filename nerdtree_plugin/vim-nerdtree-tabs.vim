@@ -168,6 +168,31 @@ fun! s:NERDTreeToggleAllTabs()
   let s:disable_handlers_for_tabdo = 0
 endfun
 
+" focus the NERDTree view, creating one first if none is present
+fun! s:NERDTreeSteppedOpen()
+  if !s:IsCurrentWindowNERDTree()
+    if s:IsNERDTreeOpenInCurrentTab()
+      call s:NERDTreeFocus()
+    else
+      call s:NERDTreeMirrorOrCreate()
+    endif
+  endif
+endfun
+
+" unfocus the NERDTree view or closes it if it hadn't had focus at the time of
+" the call
+fun! s:NERDTreeSteppedClose()
+  if s:IsCurrentWindowNERDTree()
+    call s:NERDTreeUnfocus()
+  else
+    let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
+
+    if l:nerdtree_open
+      silent NERDTreeClose
+    endif
+  endif
+endfun
+
 " === focus functions ===
 
 " if the current window is NERDTree, move focus to the next window
@@ -265,33 +290,6 @@ endfun
 " check if NERDTree is present in current tab (not necessarily visible)
 fun! s:IsNERDTreePresentInCurrentTab()
   return exists("t:NERDTreeBufName")
-endfun
-
-" === Stepped Open/Close functions ===
-
-" focus the NERDTree view, creating one first if none is present
-fun! s:NERDTreeSteppedOpen()
-  if !s:IsCurrentWindowNERDTree()
-    if s:IsNERDTreeOpenInCurrentTab()
-      call s:NERDTreeFocus()
-    else
-      call s:NERDTreeMirrorOrCreate()
-    endif
-  endif
-endfun
-
-" unfocus the NERDTree view or closes it if it hadn't had focus at the time of
-" the call
-fun! s:NERDTreeSteppedClose()
-  if s:IsCurrentWindowNERDTree()
-    call s:NERDTreeUnfocus()
-  else
-    let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
-
-    if l:nerdtree_open
-      silent NERDTreeClose
-    endif
-  endif
 endfun
 
 " === NERDTree view manipulation (scroll and cursor positions) ===
