@@ -205,7 +205,7 @@ fun! s:SaveGlobalFocus()
 endfun
 
 " restore focus to the window that was focused before leaving current tab
-fun! s:RestoreFocus()
+fun! s:NERDTreeRestoreFocus()
   if g:nerdtree_tabs_synchronize_focus
     if s:is_nerdtree_globally_focused
       call s:NERDTreeFocus()
@@ -382,7 +382,7 @@ fun! s:TabEnterHandler()
   if g:nerdtree_tabs_focus_on_files
     call s:NERDTreeUnfocus()
   else
-    call s:RestoreFocus()
+    call s:NERDTreeRestoreFocus()
   endif
 endfun
 
