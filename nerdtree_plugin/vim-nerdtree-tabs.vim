@@ -436,11 +436,14 @@ fun! s:LoadPlugin()
     call s:SaveGlobalFocus()
   end
 
-  autocmd VimEnter * call <SID>VimEnterHandler()
-  autocmd TabEnter * call <SID>TabEnterHandler()
-  autocmd TabLeave * call <SID>TabLeaveHandler()
-  autocmd WinEnter * call <SID>WinEnterHandler()
-  autocmd WinLeave * call <SID>WinLeaveHandler()
+  augroup NERDTreeTabs
+    autocmd!
+    autocmd VimEnter * call <SID>VimEnterHandler()
+    autocmd TabEnter * call <SID>TabEnterHandler()
+    autocmd TabLeave * call <SID>TabLeaveHandler()
+    autocmd WinEnter * call <SID>WinEnterHandler()
+    autocmd WinLeave * call <SID>WinLeaveHandler()
+  augroup END
 
   let g:nerdtree_tabs_loaded = 1
 endfun
