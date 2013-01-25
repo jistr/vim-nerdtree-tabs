@@ -454,7 +454,7 @@ endfun
 fun! s:VimEnterHandler()
   " if the argument to vim is a directory, cd into it
   if g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
-    exe 'cd "' . argv(0) . '"'
+    exe 'cd ' . escape(argv(0), '\ ')
   endif
 
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
