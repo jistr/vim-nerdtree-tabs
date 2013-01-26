@@ -1,5 +1,10 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.3
+
+* Partial fix for #32. When directory is given as an argument, two nerdtrees
+  are open, but both now point into the correct directory. (Thanks szajbus.)
+
 ## v1.4.2
 
 * Friendlier when using together with MiniBufExplorer. (Thanks techlivezheng.)
