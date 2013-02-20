@@ -16,7 +16,7 @@ if !exists('g:nerdtree_tabs_no_startup_for_diff')
 endif
 
 " On startup - focus NERDTree when opening a directory, focus the file if
-" editing a specified file
+" editing a specified file. If 2, always focus file after startup.
 if !exists('g:nerdtree_tabs_smart_startup_focus')
   let g:nerdtree_tabs_smart_startup_focus = 1
 endif
@@ -475,7 +475,7 @@ fun! s:VimEnterHandler()
       call s:NERDTreeOpenAllTabs()
     endif
 
-    if l:focus_file && g:nerdtree_tabs_smart_startup_focus
+    if (l:focus_file && g:nerdtree_tabs_smart_startup_focus) || g:nerdtree_tabs_smart_startup_focus == 2
       exe bufwinnr(l:main_bufnr) . "wincmd w"
     endif
   endif
