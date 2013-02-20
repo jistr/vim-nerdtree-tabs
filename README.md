@@ -93,7 +93,7 @@ values:
 
 * `g:nerdtree_tabs_smart_startup_focus` (default: `1`)  
   On startup, focus NERDTree if opening a directory, focus file if opening
-  a file.
+  a file. (If set to 2, always focus file after startup).
 
 * `g:nerdtree_tabs_open_on_new_tab` (default: `1`)  
   Open NERDTree on new tab creation (if NERDTree was globally opened by
