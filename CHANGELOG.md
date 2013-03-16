@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.4
+
+* Option to always focus file window after startup. (Thanks rr-.)
+
 ## v1.4.3
 
 * Partial fix for #32. When directory is given as an argument, two nerdtrees
