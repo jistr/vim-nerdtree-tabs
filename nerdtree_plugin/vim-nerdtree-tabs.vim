@@ -338,20 +338,24 @@ fun! s:CloseIfOnlyNerdTreeLeft()
   " Only take action when we are in NERDTree window, and no more window
   " with normal buffer open.
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) == winnr() && s:NextNormalWindow() == -1
-    " Before quitting Vim, delete the buffer so that the '0 mark
-    " is correctly set to the previous buffer. This avoids NERDTree
-    " buffer being the last displayed buffer if Vim fails to quit
-    " due to the last file in the argument list has not been edited
-    " yet. Also disable autocmd on this command to avoid unnecessary
-    " autocmd nesting.
-    if winnr('$') == 1
-      noautocmd bdelete
+    if tabpagenr('$') == 1
+      " Before quitting Vim, delete the buffer so that the '0 mark
+      " is correctly set to the previous buffer. This avoids NERDTree
+      " buffer being the last displayed buffer if Vim fails to quit
+      " due to the last file in the argument list has not been edited
+      " yet. Also disable autocmd on this command to avoid unnecessary
+      " autocmd nesting.
+      if winnr('$') == 1
+        noautocmd bdelete
+      endif
+      " Quit as usual, we have autocmd nesting open, so this command
+      " will trigger other plugin window's quiting behavior. If we are
+      " quiting Vim, our current buffer is successfully reset to the
+      " last file buffer, no need to warry about failure.
+      quit
+    else
+      close
     endif
-    " Quit as usual, we have autocmd nesting open, so this command
-    " will trigger other plugin window's quiting behavior. If we are
-    " quiting Vim, our current buffer is successfully reset to the
-    " last file buffer, no need to warry about failure.
-    quit
   endif
 endfun
 
