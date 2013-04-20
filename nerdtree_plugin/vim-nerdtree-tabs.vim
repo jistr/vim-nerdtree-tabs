@@ -318,6 +318,12 @@ fun! s:NextNormalWindow()
       continue
     endif
 
+    " skip current normal window
+    if l:i == winnr()
+      let l:i = l:i + 1
+      continue
+    endif
+
     return l:i
   endwhile
   return -1
