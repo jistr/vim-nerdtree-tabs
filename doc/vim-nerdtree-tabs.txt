@@ -83,7 +83,7 @@ values:
 * `let g:nerdtree_tabs_open_on_console_startup = 0`  
   Open NERDTree on console vim startup
 
-* `let g:nerdtree_tabs_no_startup_for_diff = 1`
+* `let g:nerdtree_tabs_no_startup_for_diff = 1`  
   Do not open NERDTree if vim starts in diff mode
 
 * `let g:nerdtree_tabs_open_on_new_tab = 1`  

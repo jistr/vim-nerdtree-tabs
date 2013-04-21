@@ -25,11 +25,11 @@ Many of these features can be switched off. See section Configuration.
 
         cd ~/.vim/bundle
         git clone https://github.com/jistr/vim-nerdtree-tabs.git
-        
+
     Or **through Vundle**:
 
         Bundle 'jistr/vim-nerdtree-tabs'
-        
+
     Or **through Janus**:
 
         cd ~/.janus
