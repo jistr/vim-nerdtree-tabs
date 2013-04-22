@@ -87,28 +87,6 @@ command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
 "
 " === NERDTree manipulation (opening, closing etc.) === {{{
 "
-" s:MirrorIfGloballyActive() {{{
-"
-" automatic NERDTree mirroring on tab switch
-fun! s:MirrorIfGloballyActive()
-  let l:nerdtree_open = s:IsNERDTreeOpenInCurrentTab()
-
-  " if NERDTree is not active in the current tab, try to mirror it
-  if s:nerdtree_globally_active && !l:nerdtree_open
-    let l:previous_winnr = winnr("$")
-
-    silent NERDTreeMirror
-
-    " if the window count of current tab changed, it means that NERDTreeMirror
-    " was successful and we should move focus to the previous window
-    if l:previous_winnr != winnr("$")
-      wincmd p
-    endif
-  endif
-endfun
-
-"
-" }}}
 " s:NERDTreeMirrorOrCreate() {{{
 "
 " switch NERDTree on for current tab -- mirror it if possible, otherwise create it
@@ -495,8 +473,11 @@ fun! s:TabEnterHandler()
     return
   endif
 
-  if g:nerdtree_tabs_open_on_new_tab && !s:IsNERDTreeOpenInCurrentTab()
-    call s:MirrorIfGloballyActive()
+  if g:nerdtree_tabs_open_on_new_tab && s:nerdtree_globally_active && !s:IsNERDTreeOpenInCurrentTab()
+    call s:NERDTreeMirrorOrCreate()
+
+    " move focus to the previous window
+    wincmd p
 
     " Turn on the 'NewTabCreated' flag
     let s:NewTabCreated = 1
