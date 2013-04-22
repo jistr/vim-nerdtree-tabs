@@ -104,10 +104,6 @@ fun! s:MirrorIfGloballyActive()
     if l:previous_winnr != winnr("$")
       wincmd p
     endif
-
-    " restoring focus to NERDTree with RestoreFocus makes windows behave
-    " wrong, so make sure it does not focus NERDTree
-    let s:is_nerdtree_globally_focused = 0
   endif
 endfun
 
@@ -443,6 +439,7 @@ fun! s:LoadPlugin()
     autocmd TabLeave * call <SID>TabLeaveHandler()
     autocmd WinEnter * call <SID>WinEnterHandler()
     autocmd WinLeave * call <SID>WinLeaveHandler()
+    autocmd BufWinEnter * call <SID>BufWinEnterHandler()
   augroup END
 
   let g:nerdtree_tabs_loaded = 1
@@ -481,6 +478,15 @@ fun! s:VimEnterHandler()
   endif
 endfun
 
+" }}} s:NewTabCreated {{{
+"
+" A flag to indicate that a new tab has just been created.
+"
+" We will handle the remaining work for this newly created tab separately in
+" BufWinEnter event.
+"
+let s:NewTabCreated = 0
+
 " }}}
 " s:TabEnterHandler() {{{
 "
@@ -489,8 +495,11 @@ fun! s:TabEnterHandler()
     return
   endif
 
-  if g:nerdtree_tabs_open_on_new_tab
+  if g:nerdtree_tabs_open_on_new_tab && !s:IsNERDTreeOpenInCurrentTab()
     call s:MirrorIfGloballyActive()
+
+    " Turn on the 'NewTabCreated' flag
+    let s:NewTabCreated = 1
   endif
 
   if g:nerdtree_tabs_synchronize_view
@@ -499,7 +508,8 @@ fun! s:TabEnterHandler()
 
   if g:nerdtree_tabs_focus_on_files
     call s:NERDTreeUnfocus()
-  else
+  " Do not restore focus on newly created tab here
+  elseif !s:NewTabCreated
     call s:NERDTreeRestoreFocus()
   endif
 endfun
@@ -537,6 +547,25 @@ fun! s:WinLeaveHandler()
 
   if g:nerdtree_tabs_synchronize_view
     call s:SaveNERDTreeViewIfPossible()
+  endif
+endfun
+
+" }}}
+" s:BufWinEnterHandler() {{{
+"
+" BufWinEnter event only gets triggered after a new buffer has been
+" successfully loaded, it is a proper time to finish the remaining
+" work for newly opened tab.
+"
+fun! s:BufWinEnterHandler()
+  if s:NewTabCreated
+    " Turn off the 'NewTabCreated' flag
+    let s:NewTabCreated = 0
+
+    " Restore focus to NERDTree if necessary
+    if !g:nerdtree_tabs_focus_on_files
+      call s:NERDTreeRestoreFocus()
+    endif
   endif
 endfun
 
