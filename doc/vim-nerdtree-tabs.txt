@@ -83,8 +83,12 @@ values:
 * `let g:nerdtree_tabs_open_on_console_startup = 0`  
   Open NERDTree on console vim startup
 
-* `let g:nerdtree_tabs_no_startup_for_diff = 1`
+* `let g:nerdtree_tabs_no_startup_for_diff = 1`  
   Do not open NERDTree if vim starts in diff mode
+
+* `let g:nerdtree_tabs_smart_startup_focus = 1`  
+  On startup - focus NERDTree when opening a directory, focus the file if
+  editing a specified file. When set to `2`, always focus file after startup.
 
 * `let g:nerdtree_tabs_open_on_new_tab = 1`  
   Open NERDTree on new tab creation (if NERDTree was globally opened by
@@ -99,11 +103,18 @@ values:
 * `let g:nerdtree_tabs_synchronize_view = 1`  
   Synchronize view of all NERDTree windows (scroll and cursor position)
 
+* `let g:nerdtree_tabs_synchronize_focus = 1`  
+  Synchronize focus when switching tabs (focus NERDTree after tab switch
+  if and only if it was focused before tab switch)
+
 * `let g:nerdtree_tabs_focus_on_files = 0`  
   When switching into a tab, make sure that focus is on the file window,
   not in the NERDTree window. (Note that this can get annoying if you use
   NERDTree's feature "open in new tab silently", as you will lose focus on the
   NERDTree.)
+
+* `g:nerdtree_tabs_startup_cd = 1`  
+  When starting up with a directory name as a parameter, cd into it
 
 ## Credits
 
