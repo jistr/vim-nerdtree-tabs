@@ -70,6 +70,7 @@ noremap <silent> <script> <Plug>NERDTreeMirrorOpen   :call <SID>NERDTreeMirrorOr
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 noremap <silent> <script> <Plug>NERDTreeSteppedOpen  :call <SID>NERDTreeSteppedOpen()
 noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
+noremap <silent> <script> <Plug>NERDTreeFocusToggle :call <SID>NERDTreeFocusToggle()
 "
 " }}}
 " === plugin commands === {{{
@@ -81,6 +82,7 @@ command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 command! NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
 command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
+command! NERDTreeFocusToggle  call <SID>NERDTreeFocusToggle()
 "
 " }}}
 " === plugin functions === {{{
@@ -199,6 +201,25 @@ fun! s:NERDTreeSteppedClose()
   endif
 endfun
 
+" }}}
+" s:NERDTreeFocusToggle() {{{
+"
+" focus the NERDTree view or creates it if in a file, 
+" or unfocus NERDTree view if in NERDTree
+fun! s:NERDTreeFocusToggle()
+  if s:IsCurrentWindowNERDTree()
+    let s:disable_handlers_for_tabdo = 1
+    call s:NERDTreeUnfocus()
+    let s:disable_handlers_for_tabdo = 0
+  else
+    let s:disable_handlers_for_tabdo = 1
+    if !s:IsNERDTreeOpenInCurrentTab()
+      call s:NERDTreeOpenAllTabs()
+    endif
+    call s:NERDTreeFocus()
+    let s:disable_handlers_for_tabdo = 0
+  endif
+endfun
 " }}}
 "
 " === NERDTree manipulation (opening, closing etc.) === }}}
