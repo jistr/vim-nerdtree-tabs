@@ -1,5 +1,11 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.5
+
+* Add NERDTreeFocusToggle function. (Thanks orthez.)
+
+* More general refactoring and cleanup. (Thanks techlivezheng.)
+
 ## v1.4.4
 
 * Option to always focus file window after startup. (Thanks rr-.)
