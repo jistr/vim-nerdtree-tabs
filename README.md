@@ -66,6 +66,9 @@ Vim-nerdtree-tabs provides these commands:
 * `:NERDTreeSteppedClose` unfocuses the NERDTree, or closes/hides it if it was
   not focused.
 
+* `:NERDTreeFocusToggle` focus the NERDTree or create it if focus is
+  on a file, unfocus NERDTree if focus is on NERDTree
+
 There are also plug-mappings available with the same functionality:
 
 * `<plug>NERDTreeTabsOpen`

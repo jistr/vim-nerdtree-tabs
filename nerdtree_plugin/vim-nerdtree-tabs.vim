@@ -207,18 +207,16 @@ endfun
 " focus the NERDTree view or creates it if in a file, 
 " or unfocus NERDTree view if in NERDTree
 fun! s:NERDTreeFocusToggle()
+  let s:disable_handlers_for_tabdo = 1
   if s:IsCurrentWindowNERDTree()
-    let s:disable_handlers_for_tabdo = 1
     call s:NERDTreeUnfocus()
-    let s:disable_handlers_for_tabdo = 0
   else
-    let s:disable_handlers_for_tabdo = 1
     if !s:IsNERDTreeOpenInCurrentTab()
       call s:NERDTreeOpenAllTabs()
     endif
     call s:NERDTreeFocus()
-    let s:disable_handlers_for_tabdo = 0
   endif
+  let s:disable_handlers_for_tabdo = 0
 endfun
 " }}}
 "
