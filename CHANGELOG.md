@@ -1,5 +1,9 @@
 # vim-nerdtree-tabs changelog
 
+## v1.4.6
+
+* Add NERDTreeTabsFind function.
+
 ## v1.4.5
 
 * Add NERDTreeFocusToggle function. (Thanks orthez.)
