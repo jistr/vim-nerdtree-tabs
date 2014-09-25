@@ -59,6 +59,11 @@ endif
 if !exists('g:nerdtree_tabs_startup_cd')
   let g:nerdtree_tabs_startup_cd = 1
 endif
+
+" automatically find and select currently opened file
+if !exists('g:nerdtree_tabs_autofind')
+  let g:nerdtree_tabs_autofind = 0
+endif
 "
 " }}}
 " === plugin mappings === {{{
@@ -66,11 +71,12 @@ endif
 noremap <silent> <script> <Plug>NERDTreeTabsOpen     :call <SID>NERDTreeOpenAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsClose    :call <SID>NERDTreeCloseAllTabs()
 noremap <silent> <script> <Plug>NERDTreeTabsToggle   :call <SID>NERDTreeToggleAllTabs()
+noremap <silent> <script> <Plug>NERDTreeTabsFind     :call <SID>NERDTreeFindFile()
 noremap <silent> <script> <Plug>NERDTreeMirrorOpen   :call <SID>NERDTreeMirrorOrCreate()
 noremap <silent> <script> <Plug>NERDTreeMirrorToggle :call <SID>NERDTreeMirrorToggle()
 noremap <silent> <script> <Plug>NERDTreeSteppedOpen  :call <SID>NERDTreeSteppedOpen()
 noremap <silent> <script> <Plug>NERDTreeSteppedClose :call <SID>NERDTreeSteppedClose()
-noremap <silent> <script> <Plug>NERDTreeFocusToggle :call <SID>NERDTreeFocusToggle()
+noremap <silent> <script> <Plug>NERDTreeFocusToggle  :call <SID>NERDTreeFocusToggle()
 "
 " }}}
 " === plugin commands === {{{
@@ -78,6 +84,7 @@ noremap <silent> <script> <Plug>NERDTreeFocusToggle :call <SID>NERDTreeFocusTogg
 command! NERDTreeTabsOpen     call <SID>NERDTreeOpenAllTabs()
 command! NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
 command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
+command! NERDTreeTabsFind     call <SID>NERDTreeFindFile()
 command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
 command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
 command! NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
@@ -204,7 +211,7 @@ endfun
 " }}}
 " s:NERDTreeFocusToggle() {{{
 "
-" focus the NERDTree view or creates it if in a file, 
+" focus the NERDTree view or creates it if in a file,
 " or unfocus NERDTree view if in NERDTree
 fun! s:NERDTreeFocusToggle()
   let s:disable_handlers_for_tabdo = 1
@@ -400,6 +407,15 @@ fun! s:RestoreNERDTreeViewIfPossible()
 endfun
 
 " }}}
+" s:NERDTreeFindFile() {{{
+"
+fun! s:NERDTreeFindFile()
+  if s:IsNERDTreeOpenInCurrentTab()
+    silent NERDTreeFind
+  endif
+endfun
+
+" }}}
 "
 " === NERDTree view manipulation (scroll and cursor positions) === }}}
 "
@@ -437,6 +453,7 @@ fun! s:LoadPlugin()
     autocmd WinEnter * call <SID>WinEnterHandler()
     autocmd WinLeave * call <SID>WinLeaveHandler()
     autocmd BufWinEnter * call <SID>BufWinEnterHandler()
+    autocmd BufRead * call <SID>BufReadHandler()
   augroup END
 
   let g:nerdtree_tabs_loaded = 1
@@ -566,6 +583,20 @@ fun! s:BufWinEnterHandler()
     if !g:nerdtree_tabs_focus_on_files
       call s:NERDTreeRestoreFocus()
     endif
+  endif
+endfun
+
+" }}}
+" s:BufReadHandler() {{{
+"
+" BufRead event gets triggered after a new buffer has been
+" successfully read from file.
+"
+fun! s:BufReadHandler()
+  " Refresh NERDTree to show currently opened file
+  if g:nerdtree_tabs_autofind
+    call s:NERDTreeFindFile()
+    call s:NERDTreeUnfocus()
   endif
 endfun
 
