@@ -529,6 +529,12 @@ fun! s:TabEnterHandler()
   elseif !s:NewTabCreated
     call s:NERDTreeRestoreFocus()
   endif
+
+  " Refresh NERDTree to show currently opened file
+  if g:nerdtree_tabs_autofind && !s:IsCurrentWindowNERDTree()
+    call s:NERDTreeFindFile()
+    call s:NERDTreeUnfocus()
+  endif
 endfun
 
 " }}}
@@ -551,6 +557,12 @@ fun! s:WinEnterHandler()
 
   if g:nerdtree_tabs_autoclose
     call s:CloseIfOnlyNerdTreeLeft()
+  endif
+
+  " Refresh NERDTree to show currently opened file
+  if g:nerdtree_tabs_autofind && !s:IsCurrentWindowNERDTree()
+    call s:NERDTreeFindFile()
+    call s:NERDTreeUnfocus()
   endif
 endfun
 
