@@ -89,10 +89,12 @@ You can switch on/off some features of the plugin by setting global vars to 1
 values:
 
 * `g:nerdtree_tabs_open_on_gui_startup` (default: `1`)  
-  Open NERDTree on gvim/macvim startup
+  Open NERDTree on gvim/macvim startup. (When set to `2`, 
+  open only if directory was given as startup argument).
 
 * `g:nerdtree_tabs_open_on_console_startup` (default: `0`)  
-  Open NERDTree on console vim startup
+  Open NERDTree on console vim startup. (When set to `2`, 
+  open only if directory was given as startup argument).
 
 * `g:nerdtree_tabs_no_startup_for_diff` (default: `1`)  
   Do not open NERDTree if vim starts in diff mode

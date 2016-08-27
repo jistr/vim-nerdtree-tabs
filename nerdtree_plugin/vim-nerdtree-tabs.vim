@@ -1,11 +1,13 @@
 " === plugin configuration variables === {{{
 "
-" open NERDTree on gvim/macvim startup
+" Open NERDTree on gvim/macvim startup. When set to `2`,
+" open only if directory was given as startup argument.
 if !exists('g:nerdtree_tabs_open_on_gui_startup')
   let g:nerdtree_tabs_open_on_gui_startup = 1
 endif
 
-" open NERDTree on console vim startup (off by default)
+" Open NERDTree on console vim startup (off by default). When set to `2`, 
+" open only if directory was given as startup argument.
 if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
 endif
@@ -463,13 +465,12 @@ endfun
 " s:VimEnterHandler() {{{
 "
 fun! s:VimEnterHandler()
-  " if the argument to vim is a directory, cd into it
-  if g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
-    exe 'cd ' . escape(argv(0), '\ ')
-  endif
+  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup == 1 && !has('gui_running')) ||
+                                  \ (g:nerdtree_tabs_open_on_gui_startup == 1 && has('gui_running'))
 
-  let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup && !has('gui_running')) ||
-                                  \ (g:nerdtree_tabs_open_on_gui_startup && has('gui_running'))
+  let l:open_directory_on_startup = isdirectory(argv(0)) && 
+			  \ ((g:nerdtree_tabs_open_on_console_startup == 2 && !has('gui_running')) || 
+			  \ (g:nerdtree_tabs_open_on_gui_startup == 2 && has('gui_running')))
 
   if g:nerdtree_tabs_no_startup_for_diff && &diff
       let l:open_nerd_tree_on_startup = 0
@@ -478,7 +479,13 @@ fun! s:VimEnterHandler()
   " this makes sure that globally_active is true when using 'gvim .'
   let s:nerdtree_globally_active = l:open_nerd_tree_on_startup
 
-  if l:open_nerd_tree_on_startup
+  " if the argument to vim is a directory, cd into it
+  if l:open_directory_on_startup || g:nerdtree_tabs_startup_cd && isdirectory(argv(0))
+    exe 'cd ' . escape(argv(0), '\ ')
+  endif
+
+
+  if l:open_nerd_tree_on_startup || l:open_directory_on_startup
     let l:focus_file = !s:IfFocusOnStartup()
     let l:main_bufnr = bufnr('%')
 
@@ -486,8 +493,21 @@ fun! s:VimEnterHandler()
       call s:NERDTreeOpenAllTabs()
     endif
 
-    if (l:focus_file && g:nerdtree_tabs_smart_startup_focus == 1) || g:nerdtree_tabs_smart_startup_focus == 2
+    if (l:focus_file && g:nerdtree_tabs_smart_startup_focus == 1) ||
+			    \ g:nerdtree_tabs_smart_startup_focus == 2 ||
+			    \ l:open_directory_on_startup
       exe bufwinnr(l:main_bufnr) . "wincmd w"
+    endif
+
+    if l:open_directory_on_startup
+      " close buffer not connected to NERDTree and open connected one
+      new
+      exe bufwinnr(l:main_bufnr) . "wincmd w"
+      quit
+
+      if g:nerdtree_tabs_smart_startup_focus != 2
+        NERDTreeFocus
+      endif
     endif
   endif
 endfun
