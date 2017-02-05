@@ -452,7 +452,9 @@ fun! s:LoadPlugin()
     autocmd VimEnter * call <SID>VimEnterHandler()
     autocmd TabEnter * call <SID>TabEnterHandler()
     autocmd TabLeave * call <SID>TabLeaveHandler()
-    autocmd WinEnter * call <SID>WinEnterHandler()
+    " We enable nesting for this autocommand (see :h autocmd-nested) so that
+    " exiting Vim when NERDTree is the last window triggers the VimLeave event.
+    autocmd WinEnter * nested call <SID>WinEnterHandler()
     autocmd WinLeave * call <SID>WinLeaveHandler()
     autocmd BufWinEnter * call <SID>BufWinEnterHandler()
     autocmd BufRead * call <SID>BufReadHandler()
