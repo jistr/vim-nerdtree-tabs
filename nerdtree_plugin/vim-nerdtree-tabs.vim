@@ -512,8 +512,8 @@ fun! s:VimEnterHandler()
       endif
     endif
     if g:nerdtree_tabs_autofind
-        call s:NERDTreeFindFile()
-        call s:NERDTreeUnfocus()
+      call s:NERDTreeFindFile()
+      call s:NERDTreeUnfocus()
     endif
   endif
 endfun
