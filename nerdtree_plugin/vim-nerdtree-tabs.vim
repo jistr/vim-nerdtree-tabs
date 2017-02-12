@@ -6,7 +6,7 @@ if !exists('g:nerdtree_tabs_open_on_gui_startup')
   let g:nerdtree_tabs_open_on_gui_startup = 1
 endif
 
-" Open NERDTree on console vim startup (off by default). When set to `2`, 
+" Open NERDTree on console vim startup (off by default). When set to `2`,
 " open only if directory was given as startup argument.
 if !exists('g:nerdtree_tabs_open_on_console_startup')
   let g:nerdtree_tabs_open_on_console_startup = 0
@@ -470,8 +470,8 @@ fun! s:VimEnterHandler()
   let l:open_nerd_tree_on_startup = (g:nerdtree_tabs_open_on_console_startup == 1 && !has('gui_running')) ||
                                   \ (g:nerdtree_tabs_open_on_gui_startup == 1 && has('gui_running'))
 
-  let l:open_directory_on_startup = isdirectory(argv(0)) && 
-			  \ ((g:nerdtree_tabs_open_on_console_startup == 2 && !has('gui_running')) || 
+  let l:open_directory_on_startup = isdirectory(argv(0)) &&
+			  \ ((g:nerdtree_tabs_open_on_console_startup == 2 && !has('gui_running')) ||
 			  \ (g:nerdtree_tabs_open_on_gui_startup == 2 && has('gui_running')))
 
   if g:nerdtree_tabs_no_startup_for_diff && &diff
@@ -510,6 +510,10 @@ fun! s:VimEnterHandler()
       if g:nerdtree_tabs_smart_startup_focus != 2
         NERDTreeFocus
       endif
+    endif
+    if g:nerdtree_tabs_autofind
+        call s:NERDTreeFindFile()
+        call s:NERDTreeUnfocus()
     endif
   endif
 endfun
