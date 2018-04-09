@@ -578,7 +578,7 @@ fun! s:WinEnterHandler()
   " We need to handle VimLeave properly.
   " But we shouldn't nest redefined autocmds
   let s:ei = &eventignore
-  let &eventignore = 'TabEnter,TabLeave,WinLeave,BufRead,BufWinEnter,WinEnter'
+  let &eventignore = 'VimEnter,TabEnter,TabLeave,WinEnter,WinLeave,BufWinEnter,BufRead'
   if g:nerdtree_tabs_autoclose
     call s:CloseIfOnlyNerdTreeLeft()
   endif
