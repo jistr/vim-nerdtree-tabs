@@ -143,6 +143,10 @@ fun! s:NERDTreeOpenAllTabs()
   let l:current_tab = tabpagenr()
   tabdo call s:NERDTreeMirrorOrCreate()
   exe 'tabn ' . l:current_tab
+  if g:nerdtree_tabs_autofind
+    call s:NERDTreeUnfocus()
+    call s:NERDTreeFindFile()
+  endif
 endfun
 
 " }}}
