@@ -83,15 +83,15 @@ noremap <silent> <script> <Plug>NERDTreeFocusToggle  :call <SID>NERDTreeFocusTog
 " }}}
 " === plugin commands === {{{
 "
-command! NERDTreeTabsOpen     call <SID>NERDTreeOpenAllTabs()
-command! NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
-command! NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
-command! NERDTreeTabsFind     call <SID>NERDTreeFindFile()
-command! NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
-command! NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
-command! NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
-command! NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
-command! NERDTreeFocusToggle  call <SID>NERDTreeFocusToggle()
+command! -bar NERDTreeTabsOpen     call <SID>NERDTreeOpenAllTabs()
+command! -bar NERDTreeTabsClose    call <SID>NERDTreeCloseAllTabs()
+command! -bar NERDTreeTabsToggle   call <SID>NERDTreeToggleAllTabs()
+command! -bar NERDTreeTabsFind     call <SID>NERDTreeFindFile()
+command! -bar NERDTreeMirrorOpen   call <SID>NERDTreeMirrorOrCreate()
+command! -bar NERDTreeMirrorToggle call <SID>NERDTreeMirrorToggle()
+command! -bar NERDTreeSteppedOpen  call <SID>NERDTreeSteppedOpen()
+command! -bar NERDTreeSteppedClose call <SID>NERDTreeSteppedClose()
+command! -bar NERDTreeFocusToggle  call <SID>NERDTreeFocusToggle()
 "
 " }}}
 " === plugin functions === {{{
